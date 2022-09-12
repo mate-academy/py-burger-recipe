@@ -9,7 +9,8 @@ class Validator(ABC):
         return getattr(instance, self.protected_name)
 
     def __set__(self, instance, value):
-        setattr(instance, self.protected_name, value)
+        if self.validate(value):
+            setattr(instance, self.protected_name, value)
 
     @abstractmethod
     def validate(self, value):
@@ -20,10 +21,6 @@ class Number(Validator):
     def __init__(self, min_value, max_value):
         self.min_value = min_value
         self.max_value = max_value
-
-    def __set__(self, instance, value):
-        if self.validate(value):
-            super(Number, self).__set__(instance, value)
 
     def validate(self, value):
         if not isinstance(value, int):
@@ -43,10 +40,6 @@ class OneOf(Validator):
         if value not in self.options:
             raise ValueError(f"Expected {value} to be one of {self.options}.")
         return True
-
-    def __set__(self, instance, value):
-        if self.validate(value):
-            super(OneOf, self).__set__(instance, value)
 
 
 class BurgerRecipe:
