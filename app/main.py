@@ -10,6 +10,7 @@ class Validator(ABC):
         return getattr(instance, self.protected_name)
 
     def __set__(self, instance, value):
+        self.validate(value)
         setattr(instance, self.protected_name, value)
 
     @abstractmethod
@@ -27,7 +28,8 @@ class Number(Validator):
         if not isinstance(value, int):
             raise TypeError("Quantity should be integer.")
         if value > self.max_value or value < self.min_value:
-            raise ValueError(f"Quantity should not be less than {self.min_value}"
+            raise ValueError(f"Quantity should not be"
+                             f" less than {self.min_value}"
                              f" and greater than {self.max_value}.")
         return True
 
@@ -39,7 +41,7 @@ class OneOf(Validator):
 
     def validate(self, value):
         if value not in self.options:
-            raise ValueError(f"Expected {value} to be one of {self.options}")
+            raise ValueError(f"Expected {value} to be one of {self.options}.")
 
 
 class BurgerRecipe:
@@ -49,7 +51,7 @@ class BurgerRecipe:
     tomatoes = Number(0, 3)
     cutlets = Number(1, 3)
     eggs = Number(0, 2)
-    sauce = OneOf(["ketchup", "mayo", "burger"])
+    sauce = OneOf(("ketchup", "mayo", "burger"))
 
     def __init__(self, buns, cheese, tomatoes,
                  cutlets, eggs, sauce):
