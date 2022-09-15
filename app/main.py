@@ -9,8 +9,8 @@ class Validator(ABC):
         return getattr(instance, self.protected_name)
 
     def __set__(self, instance, value):
-        if self.validate(value):
-            setattr(instance, self.protected_name, value)
+        self.validate(value)
+        setattr(instance, self.protected_name, value)
 
     @abstractmethod
     def validate(self, value):
@@ -26,7 +26,8 @@ class Number(Validator):
         if not isinstance(value, int):
             raise TypeError("Quantity should be integer.")
         if value not in range(self.min_value, self. max_value + 1):
-            raise ValueError(f"Quantity should not be less than {self.min_value}"
+            raise ValueError(f"Quantity should not be"
+                             f" less than {self.min_value}"
                              f" and greater than {self.max_value}.")
         return True
 
