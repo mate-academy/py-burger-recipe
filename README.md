@@ -36,7 +36,8 @@ Also, you need to implement the `Number` class, which is the `Validator` child c
 
 - the `__init__` method, which accepts and stores the `min_value` and the `max_value`;
 - the `validate` method, which checks the value type, and if the type is incorrect, it must raise the `TypeError` exception with the `Quantity should be integer` message.
-Then it should check whether the value is within `min_value` and `max_value`. If it’s not, it should raise the `ValueError` with the `Quantity should not be less than {self.min_value} and greater than {self.max_value}.` message.
+Then it should check whether the value is within `min_value` and `max_value`. If it’s not, it should raise the `ValueError` 
+- with the `Quantity should not be less than {self.min_value} and greater than {self.max_value}.` message.
 
 Last but not least, you need to implement the `OneOf` validator, which is the child class of the `Validator` class. It allows to choose one of the provided values and should have:
 - the `__init__` method, which accepts and stores `options`;
