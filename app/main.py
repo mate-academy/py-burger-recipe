@@ -10,7 +10,7 @@ class Validator(ABC):
     def __get__(self, instance: BurgerRecipe, owner: object) -> None:
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance, value: (int, str)) -> None:
+    def __set__(self, instance: BurgerRecipe, value: (int, str)) -> None:
         return setattr(instance, self.protected_name, self.validate(value))
 
     @abstractmethod
