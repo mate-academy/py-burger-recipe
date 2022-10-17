@@ -10,6 +10,7 @@ class Validator(ABC):
         return getattr(instance, self.protected_name)
 
     def __set__(self, instance: object, value: [int, str]) -> None:
+        self.validate(value)
         setattr(instance, self.protected_name, value)
 
     @abstractmethod
@@ -46,7 +47,7 @@ class OneOf(Validator):
 
 class BurgerRecipe:
 
-    buns = Number(min_value=0, max_value=3)
+    buns = Number(min_value=2, max_value=3)
     cheese = Number(min_value=0, max_value=2)
     tomatoes = Number(min_value=0, max_value=3)
     cutlets = Number(min_value=1, max_value=3)
