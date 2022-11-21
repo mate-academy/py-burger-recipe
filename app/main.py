@@ -8,7 +8,7 @@ class Validator(ABC):
     
     def __get__(self, instance: object, owner: object) -> None:
         return getattr(instance, self.protected_name)
-        
+
     def __set__(self, instance: object, value: object) -> None:
         self.validate(value)
         return setattr(instance, self.protected_name, value)
@@ -17,8 +17,6 @@ class Validator(ABC):
     def validate(self, value: object) -> None:
         pass
     
-
-
 
 class Number(Validator):
     def __init__(self, min_value: int, max_value: int) -> None:
