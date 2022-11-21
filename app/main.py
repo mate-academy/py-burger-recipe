@@ -1,26 +1,49 @@
-class Validator:
+from abc import abstractmethod, ABC
+
+
+
+class Validator(ABC):
     
-    def __setname__(self, name_of_the_attribute: str) -> str:
-        return "_" + name_of_the_attribute
-
-    def __set__(self, name_of_the_attribute: str, value: int) -> None:
-       name_of_the_attribute = value 
+    def __setname__(self, owner: str, name: str) -> str:
+        self.protected_name = "_" + name    
     
-    def __get__(name_of_the_attribute):
-        return name_of_the_attribute
+    def __get__(self, instance: object, owner: object) -> None:
+        return getattr(instance, self.protected_name)
     
 
 
 
-class Number:
-    pass
+class Number(Validator):
+    def __init__(self, min_value: int, max_value: int) -> None:
+        self.min_value = min_value
+        self.max_value = max_value
+
+    def validate(self, value: int) -> None:
+        if not isinstance(value, int):
+            raise TypeError("Quantity should be integer.")
+        if not (self.min_value <= value <= self.max_value):
+            raise ValueError(f"Quantity should not be less than "
+                             f"{self.min_value} and greater "
+                             f"than {self.max_value}.")
 
 
-class OneOf:
-    pass
+class OneOf(Validator):
+   def __set__(self, instance: object, value: object) -> None:
+        self.validate(value)
+        return setattr(instance, self.protected_name, value)
+
+    @abstractmethod
+    def validate(self, value: object) -> None:
+        pass 
 
 
 class BurgerRecipe:
+    buns =
+    cheese =
+    tomatoes = 
+    cutlets = 
+    eggs = 
+    sauce = 
     def __init__(self,
                  buns: int,
                  cheese: int,
