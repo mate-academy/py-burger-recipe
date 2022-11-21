@@ -28,12 +28,13 @@ class Number(Validator):
 
 
 class OneOf(Validator):
-    def __init__(self, options: tuple) -> None:
-        self.options = options
+    def __set__(self, instance: object, value: object) -> None:
+        self.validate(value)
+        return setattr(instance, self.protected_name, value)
 
+    @abstractmethod
     def validate(self, value: object) -> None:
-        if value not in self.options:
-            raise ValueError(f"Expected {value} to be one of {self.options}.")
+        pass
 
 
 class BurgerRecipe:
