@@ -1,7 +1,6 @@
 from abc import abstractmethod, ABC
 
 
-
 class Validator(ABC):
     
     def __setname__(self, owner: str, name: str) -> str:
@@ -9,6 +8,14 @@ class Validator(ABC):
     
     def __get__(self, instance: object, owner: object) -> None:
         return getattr(instance, self.protected_name)
+        
+    def __set__(self, instance: object, value: object) -> None:
+        self.validate(value)
+        return setattr(instance, self.protected_name, value)
+
+    @abstractmethod
+    def validate(self, value: object) -> None:
+        pass
     
 
 
@@ -28,13 +35,12 @@ class Number(Validator):
 
 
 class OneOf(Validator):
-    def __set__(self, instance: object, value: object) -> None:
-        self.validate(value)
-        return setattr(instance, self.protected_name, value)
+    def __init__(self, options: tuple) -> None:
+        self.options = options
 
-    @abstractmethod
-    def validate(self, value: object) -> None:
-        pass
+    def validate(self, value: str) -> None:
+        if value not in self.options:
+            raise ValueError(f"Expected {value} to be one of {self.options}.")
 
 
 class BurgerRecipe:
