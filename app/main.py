@@ -53,7 +53,7 @@ class BurgerRecipe:
                  tomatoes: int,
                  cutlets: int,
                  eggs: int,
-                 sauce: int)
+                 sauce: int):
         self.buns = buns
         self.cheese = cheese
         self.tomatoes = tomatoes
