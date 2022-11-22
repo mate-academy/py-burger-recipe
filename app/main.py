@@ -14,7 +14,7 @@ class Validator(ABC):
         return setattr(instance, self.protected_name, self.validate(value))
 
     @abstractmethod
-    def validate(self, value: object) -> None:
+    def validate(self, Union[int, str]) -> None:
         pass
 
 
