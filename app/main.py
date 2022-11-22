@@ -14,7 +14,7 @@ class Validator(ABC):
         return setattr(instance, self.protected_name, self.validate(value))
 
     @abstractmethod
-    def validate(self, Union[int, str]) -> None:
+    def validate(self, value: Union[int, str]) -> None:
         pass
 
 
@@ -41,7 +41,7 @@ class OneOf(Validator):
     def validate(self, value: str) -> str:
         if value not in self.options:
             raise ValueError(f"Expected {value} to be one of {self.options}.")
-            
+
         return value
 
 
