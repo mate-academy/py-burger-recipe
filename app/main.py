@@ -15,7 +15,7 @@ class Validator(ABC):
     @abstractmethod
     def validate(self, value: object) -> None:
         pass
-    
+   
 
 class Number(Validator):
     def __init__(self, min_value: int, max_value: int) -> None:
@@ -47,13 +47,14 @@ class BurgerRecipe:
     cutlets = Number(1, 3)
     eggs = Number(0, 2)
     sauce = OneOf(("ketchup", "mayo", "burger"))
+
     def __init__(self,
                  buns: int,
                  cheese: int,
                  tomatoes: int,
                  cutlets: int,
                  eggs: int,
-                 sauce: int):
+                 sauce: int) -> None:
         self.buns = buns
         self.cheese = cheese
         self.tomatoes = tomatoes
