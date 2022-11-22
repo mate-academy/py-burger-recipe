@@ -14,7 +14,7 @@ class Validator(ABC):
         setattr(instance, self.protected_name, self.validate(value))
 
     @abstractmethod
-    def validate(self, value: Union[int, str]) -> None:
+    def validate(self, value: Union[int, str]) -> object:
         pass
 
 
@@ -26,12 +26,12 @@ class Number(Validator):
     def validate(self, value: int) -> int:
         if not isinstance(value, int):
             raise TypeError("Quantity should be integer.")
-        if value not in range(self.min_value, self.max_value + 1):
+        if not (self.min_value <= value <= self.max_value):
             raise ValueError(f"Quantity should not be less than "
                              f"{self.min_value} and greater "
                              f"than {self.max_value}.")
-
-        return value
+        else:
+            return value
 
 
 class OneOf(Validator):
@@ -41,7 +41,6 @@ class OneOf(Validator):
     def validate(self, value: str) -> str:
         if value not in self.options:
             raise ValueError(f"Expected {value} to be one of {self.options}.")
-
         return value
 
 
