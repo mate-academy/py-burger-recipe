@@ -1,20 +1,21 @@
 from abc import ABC, abstractmethod
+from typing import Union
 
 
 class Validator(ABC):
-    def __setname__(self, owner: str, name: str) -> str:
+    def __setname__(self, owner: str, name: str) -> None:
         self.protected_name = "_" + name
 
     def __get__(self, instance: object, owner: object) -> None:
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance: object, value: object) -> None:
-        self.validate(value)
-        return setattr(instance, self.protected_name, value)
+    def __set__(self, instance: object,
+                value: Union[int, str]) -> None:
+        return setattr(instance, self.protected_name, self.validate(value))
 
     @abstractmethod
-    def validate(self, value: object) -> int:
-        return value
+    def validate(self, value: object) -> None:
+        pass
 
 
 class Number(Validator):
@@ -25,7 +26,7 @@ class Number(Validator):
     def validate(self, value: int) -> str:
         if not isinstance(value, int):
             raise TypeError("Quantity should be integer.")
-        if not (self.min_value <= value <= self.max_value):
+        if value not in range(self.min_value, self.max_value + 1):
             raise ValueError(f"Quantity should not be less than "
                              f"{self.min_value} and greater "
                              f"than {self.max_value}.")
