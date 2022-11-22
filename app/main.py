@@ -3,7 +3,7 @@ from typing import Union
 
 
 class Validator(ABC):
-    def __setname__(self, owner: str, name: str) -> None:
+    def __setname__(self, owner: object, name: str) -> None:
         self.protected_name = "_" + name
 
     def __get__(self, instance: object, owner: object) -> None:
@@ -11,7 +11,7 @@ class Validator(ABC):
 
     def __set__(self, instance: object,
                 value: Union[int, str]) -> None:
-        return setattr(instance, self.protected_name, self.validate(value))
+        setattr(instance, self.protected_name, self.validate(value))
 
     @abstractmethod
     def validate(self, value: Union[int, str]) -> None:
