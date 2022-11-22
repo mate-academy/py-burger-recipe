@@ -15,7 +15,7 @@ class Validator(ABC):
     @abstractmethod
     def validate(self, value: object) -> None:
         pass
-   
+
 
 class Number(Validator):
     def __init__(self, min_value: int, max_value: int) -> None:
