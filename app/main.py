@@ -1,10 +1,10 @@
 from abc import abstractmethod, ABC
 
 
-class Validator(ABC):    
+class Validator(ABC):
     def __setname__(self, owner: str, name: str) -> str:
-        self.protected_name = "_" + name    
-    
+        self.protected_name = "_" + name
+
     def __get__(self, instance: object, owner: object) -> None:
         return getattr(instance, self.protected_name)
 
