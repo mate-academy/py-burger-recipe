@@ -1,31 +1,37 @@
+from __future__ import annotations
+from typing import Union
 from abc import abstractmethod, ABC
 
 
 class Validator(ABC):
-    def __set_name__(self, owner, name):
+    def __set_name__(self, owner: BurgerRecipe, name: str) -> None:
         self.public_name = name
         self.protected_name = "_" + name
 
-    def __get__(self, value, owner):
+    def __get__(self,
+                value: Union[int, str],
+                owner: BurgerRecipe
+                ) -> BurgerRecipe:
         return getattr(value, self.protected_name)
 
-    def __set__(self, value, new_value):
+    @abstractmethod
+    def __set__(self) -> None:
         pass
 
     @abstractmethod
-    def validate(self, value) -> None:
+    def validate(self) -> None:
         pass
 
 
 class Number(Validator):
-    def __init__(self, min_value, max_value) -> None:
+    def __init__(self, min_value: int, max_value: int) -> None:
         self.min_value = min_value
         self.max_value = max_value
 
-    def __set__(self, value, new_value):
+    def __set__(self, value: BurgerRecipe, new_value: int) -> setattr:
         return setattr(value, self.protected_name, self.validate(new_value))
 
-    def validate(self, value) -> int:
+    def validate(self, value: int) -> int:
         if not isinstance(value, int):
             raise TypeError("Quantity should be integer.")
         if value < self.min_value or value > self.max_value:
@@ -39,10 +45,10 @@ class OneOf(Validator):
     def __init__(self, options: tuple) -> None:
         self.options = options
 
-    def __set__(self, value, new_value):
+    def __set__(self, value: BurgerRecipe, new_value: str) -> setattr:
         return setattr(value, self.protected_name, self.validate(new_value))
 
-    def validate(self, value) -> str:
+    def validate(self, value: str) -> str:
         if value not in self.options:
             raise ValueError(f"Expected {value} to be one of {self.options}.")
         return value
