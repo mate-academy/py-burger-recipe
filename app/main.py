@@ -3,30 +3,31 @@ from typing import Any
 
 
 class Validator(ABC):
-    def __set_name__(self, owner, name) -> None:
+    def __set_name__(self, owner: Any, name: Any) -> None:
         self.public_name = name
         self.protected_name = "_" + name
 
-    def __get__(self, owner, value) -> int:
+    def __get__(self, owner: Any, value: Any) -> int:
         return getattr(owner, self.protected_name)
 
     @abstractmethod
-    def __set__(self, instence, value) -> Any:
+    def __set__(self, instence: Any, value: Any) -> Any:
         pass
 
     @abstractmethod
-    def validate(self, value) -> None:
+    def validate(self, value: Any) -> None:
         pass
 
+
 class Number(Validator):
-    def __init__(self, min_value: int, max_value: int ) -> None:
+    def __init__(self, min_value: int, max_value: int) -> None:
         self.min_value = min_value
         self.max_value = max_value
 
-    def __set__(self, instence, value):
+    def __set__(self, instence: Any, value: Any) -> Any:
         return setattr(instence, self.protected_name, self.validate(value))
 
-    def validate(self, value) -> int:
+    def validate(self, value: Any) -> int:
         if not isinstance(value, int):
             raise TypeError("Quantity should be integer.")
         if value < self.min_value or value > self.max_value:
@@ -40,10 +41,10 @@ class OneOf(Validator):
     def __init__(self, options: tuple) -> None:
         self.options = options
 
-    def __set__(self, value, new_value):
+    def __set__(self, value: Any, new_value: Any) -> Any:
         return setattr(value, self.protected_name, self.validate(new_value))
 
-    def validate(self, value) -> str:
+    def validate(self, value: Any) -> str:
         if value not in self.options:
             raise ValueError(f"Expected {value} to be one of {self.options}.")
         return value
