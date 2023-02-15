@@ -10,6 +10,7 @@ class Validator(ABC):
         return getattr(instance, self.protected_name)
 
     def __set__(self, instance: Type[object], value: int | tuple) -> None:
+        self.validate(value)
         setattr(instance, self.protected_name, value)
 
     @abstractmethod
@@ -32,10 +33,6 @@ class Number(Validator):
                 f"{self.max_value}"
             )
 
-    def __set__(self, instance: Any, value: int) -> None:
-        self.validate(value)
-        super().__set__(instance, value)
-
 
 class OneOf(Validator):
     def __init__(self, options: tuple) -> None:
@@ -44,10 +41,6 @@ class OneOf(Validator):
     def validate(self, value: tuple) -> None:
         if value not in self.options:
             raise ValueError(f"Expected {value} to be one of {self.options}.")
-
-    def __set__(self, instance: Any, value: tuple) -> None:
-        self.validate(value)
-        super().__set__(instance, value)
 
 
 class BurgerRecipe:
