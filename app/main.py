@@ -24,7 +24,6 @@ class Number(Validator):
         self.max_value = max_value
 
     def validate(self, value: int) -> None:
-        # print(f"test 02 - {self.__class__.__name__} starts working")
         if type(value) != int:
             raise TypeError("Quantity should be integer.")
         if not self.min_value <= value <= self.max_value:
