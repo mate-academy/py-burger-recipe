@@ -1,19 +1,22 @@
 from abc import ABC, abstractmethod
+from typing import Any, Union
 
 
 class Validator(ABC):
-    def __set_name__(self, owner, name) -> None:
+    def __set_name__(self, owner: Any, name: str) -> None:
         self.protected_name = "_" + name
 
-    def __get__(self, instance, owner) -> None:
+    def __get__(self, instance: Union[int, str], owner: Any) -> None:
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance, value) -> None:
+    def __set__(self,
+                instance: Union[int, str],
+                value: Union[int, str]) -> None:
         if self.validate(value):
             setattr(instance, self.protected_name, value)
 
     @abstractmethod
-    def validate(self, value: int) -> bool:
+    def validate(self, value: Union[int, str]) -> bool:
         pass
 
 
