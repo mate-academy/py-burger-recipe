@@ -5,7 +5,8 @@ before starting.
 
 You work at the **In-N-Out** and make delicious burgers. 
 
-Create the `BurgerRecipe` class. Its `__init__` method should accept and save the number of ingredients needed to make a burger, such as cheese, tomatoes, cutlets, eggs, buns, and sauce.
+Create the `BurgerRecipe` class. Its `__init__` method should accept and save the number of ingredients needed 
+to make a burger, such as cheese, tomatoes, cutlets, eggs, buns, and sauce.
 
 ```python
 cheese_burger = Burger(buns=2, cheese=2, tomatoes=1, cutlets=1, eggs=1, sauce="ketchup")
