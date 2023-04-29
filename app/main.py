@@ -36,7 +36,7 @@ class OneOf(Validator):
     def __init__(self, options: str) -> None:
         self.options = options
 
-    def validate(self, value: int) -> None:
+    def validate(self, value: str) -> None:
         if value not in self.options:
             raise
             ValueError
