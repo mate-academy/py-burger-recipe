@@ -3,13 +3,13 @@ from abc import ABC, abstractmethod
 
 
 class Validator(ABC):
-    def __set_name__(self, instance, name) -> None:
+    def __set_name__(self, instance: Number, name: str) -> None:
         self.protected_name = "_" + name
 
-    def __get__(self, instance, owner) -> int:
+    def __get__(self, instance: BurgerRecipe, owner: BurgerRecipe) -> int:
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance, value) -> None:
+    def __set__(self, instance: BurgerRecipe, value: int) -> None:
         self.validate(value)
         setattr(instance, self.protected_name, value)
 
@@ -25,7 +25,7 @@ class Number(Validator):
 
     def validate(self, value) -> None:
         if not isinstance(value, int):
-            raise TypeError ("Quantity should be integer.")
+            raise TypeError ("Quantity should be integer")
         if not (self.min_value <= value <= self.max_value):
             raise ValueError(f"Quantity should not be less than"
                  f" {self.min_value} and greater than {self.max_value}")
@@ -38,8 +38,8 @@ class OneOf(Validator):
     def validate(self, value) -> None:
         if value not in self.options:
             raise ValueError(f"Expected {value} to be one of {self.options}")
-            
-            
+
+
 class BurgerRecipe():
     buns = Number(2, 3)
     cheese = Number(0, 2)
