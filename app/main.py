@@ -38,7 +38,9 @@ class OneOf(Validator):
 
     def validate(self, value: int) -> None:
         if value not in self.options:
-            raise ValueError(f"Expected {value} to be one of {self.options}")
+            raise 
+            ValueError
+            ("Expected mustard to be one of ('ketchup', 'mayo','burger').")
 
 
 class BurgerRecipe():
