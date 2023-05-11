@@ -1,15 +1,18 @@
 from abc import ABC, abstractmethod
+
+from typing import Any
 from typing import Union
+from typing import Type
 
 
 class Validator(ABC):
-    def __set_name__(self, owner: BurgerRecipe, name: str) -> None:
+    def __set_name__(self, owner: Type, name: str) -> None:
         self.protected_name = f"_{name}"
 
-    def __get__(self, instance: BurgerRecipe, owner: BurgerRecipe) -> str:
+    def __get__(self, instance: Any, owner: Type) -> str:
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance: BurgerRecipe, value: int) -> None:
+    def __set__(self, instance: Any, value: int) -> None:
         self.validate(value)
         setattr(instance, self.protected_name, value)
 
