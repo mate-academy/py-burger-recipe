@@ -1,19 +1,20 @@
 from abc import ABC, abstractmethod
+from typing import Union
 
 
 class Validator(ABC):
-    def __set_name__(self, owner, name) -> None:
+    def __set_name__(self, owner: BurgerRecipe, name: str) -> None:
         self.protected_name = f"_{name}"
 
-    def __get__(self, instance, owner) -> str:
+    def __get__(self, instance: BurgerRecipe, owner: BurgerRecipe) -> str:
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance, value) -> None:
+    def __set__(self, instance: BurgerRecipe, value: int) -> None:
         self.validate(value)
         setattr(instance, self.protected_name, value)
 
     @abstractmethod
-    def validate(self, value) -> None:
+    def validate(self, value: Union[int, str]) -> None:
         pass
 
 
@@ -26,7 +27,7 @@ class Number(Validator):
         self.min_value = min_value
         self.max_value = max_value
 
-    def validate(self, value) -> None:
+    def validate(self, value: int) -> None:
         if not isinstance(value, int):
             raise TypeError("Quantity should be integer.")
         if value < self.min_value or value > self.max_value:
@@ -37,10 +38,10 @@ class Number(Validator):
 
 
 class OneOf(Validator):
-    def __init__(self, options) -> None:
+    def __init__(self, options: tuple) -> None:
         self.options = options
 
-    def validate(self, value) -> None:
+    def validate(self, value: str) -> None:
         if value not in self.options:
             raise ValueError(f"Expected {value} to be one of {self.options}.")
 
