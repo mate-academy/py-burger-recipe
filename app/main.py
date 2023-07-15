@@ -4,14 +4,14 @@ from typing import Any, Tuple
 
 class Validator(ABC):
     def __set_name__(self, owner: Any, name: str) -> None:
-        self.protected_name = "_" + name
+        self.protected_name = f"_{name}"
 
     def __get__(self, instance: Any, owner: Any) -> str:
         return getattr(instance, self.protected_name)
 
     def __set__(self, instance: Any, value: Any) -> None:
-        if self.validate(value):
-            setattr(instance, self.protected_name, value)
+        self.validate(value)
+        setattr(instance, self.protected_name, value)
 
     @abstractmethod
     def validate(self, value: Any) -> None:
