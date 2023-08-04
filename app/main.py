@@ -3,14 +3,13 @@ from typing import Any
 
 
 class Validator(ABC):
-
     def __set_name__(self, owner: Any, name: Any) -> None:
-        self.protected_name = "_" + name
+        self.protected_name = f"_{name}"
 
     def __get__(self, instance: Any, owner: Any) -> Any:
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance: Any, value: Any) -> Any:
+    def __set__(self, instance: Any, value: Any) -> None:
         setattr(instance, self.protected_name, value)
         self.validate(value)
 
@@ -20,7 +19,6 @@ class Validator(ABC):
 
 
 class Number(Validator):
-
     def __init__(self, min_value: int, max_value: int) -> None:
         self.min_value = min_value
         self.max_value = max_value
@@ -29,13 +27,13 @@ class Number(Validator):
         if not isinstance(value, int):
             raise TypeError("Quantity should be integer.")
         if value < self.min_value or value > self.max_value:
-            raise ValueError(f"Quantity should not be less than "
-                             f"{self.min_value} and greater than "
-                             f"{self.max_value}.")
+            raise ValueError(
+                f"Quantity should not be less than "
+                f"{self.min_value} and greater than {self.max_value}."
+            )
 
 
 class OneOf(Validator):
-
     def __init__(self, options: tuple) -> None:
         self.options = options
 
@@ -45,16 +43,14 @@ class OneOf(Validator):
 
 
 class BurgerRecipe:
+    buns = Number(2, 3)
+    cheese = Number(0, 2)
+    tomatoes = Number(0, 3)
+    cutlets = Number(1, 3)
+    eggs = Number(0, 2)
+    sauce = OneOf(("ketchup", "mayo", "burger"))
 
-    buns = Number(min_value=1, max_value=4)
-    cheese = Number(min_value=0, max_value=2)
-    tomatoes = Number(min_value=0, max_value=4)
-    cutlets = Number(min_value=1, max_value=3)
-    eggs = Number(min_value=0, max_value=2)
-    sauce = OneOf(options=("ketchup", "mayo", "burger"))
-
-    def __init__(self,
-                 buns: int,
+    def __init__(self, buns: int,
                  cheese: int,
                  tomatoes: int,
                  cutlets: int,
