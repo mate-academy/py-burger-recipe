@@ -2,46 +2,46 @@ from abc import ABC, abstractmethod
 
 
 class Validator(ABC):
-    def __set_name__(self, owner, name):
+    def __set_name__(self, owner: type, name: str) -> None:
         self.public_name = name
         self.protected_name = "_" + name
 
-    def __get__(self, instance, owner):
+    def __get__(self, instance: object, owner: object) -> None:
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance, value):
+    def __set__(self, instance: object, value: object) -> None:
         self.validate(value)
 
         setattr(instance, self.protected_name, value)
 
     @abstractmethod
-    def validate(self, value):
+    def validate(self, value: object) -> None:
         pass
 
 
 class Number(Validator, ABC):
-    def __init__(self, min_value, max_value):
+    def __init__(self, min_value: int, max_value: int) -> None:
         super().__init__()
         self.min_value = min_value
         self.max_value = max_value
 
-    def validate(self, value):
-        # print(f"count: {value}, min: {self.min_value}, max: {self.max_value}")
+    def validate(self, value: object) -> None:
         if not isinstance(value, int):
             raise TypeError("Quantity should be integer.")
 
         if not self.min_value <= value <= self.max_value:
             raise ValueError(
-                f"Quantity should not be less than {self.min_value} and greater than {self.max_value}."
+                f"Quantity should not be less than {self.min_value}"
+                f" and greater than {self.max_value}."
             )
 
 
 class OneOf(Validator, ABC):
-    def __init__(self, options):
+    def __init__(self, options: tuple[str, ...]) -> None:
         super().__init__()
         self.options = options
 
-    def validate(self, value):
+    def validate(self, value: object) -> None:
         if value not in self.options:
             raise ValueError(f"Expected {value} to be one of {self.options}.")
 
@@ -55,7 +55,15 @@ class BurgerRecipe:
     eggs = Number(0, 2)
     sauce = OneOf(("ketchup", "mayo", "burger"))
 
-    def __init__(self, buns, cheese, tomatoes, cutlets, eggs, sauce):
+    def __init__(
+        self,
+        buns: int,
+        cheese: int,
+        tomatoes: int,
+        cutlets: int,
+        eggs: int,
+        sauce: int,
+    ) -> None:
         self.buns = buns
         self.cheese = cheese
         self.tomatoes = tomatoes
