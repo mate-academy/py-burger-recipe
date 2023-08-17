@@ -2,18 +2,18 @@ from abc import ABC, abstractmethod
 
 
 class Validator(ABC):
-    def __set_name__(self, owner, name):
+    def __set_name__(self, owner: str or int, name: str) -> None:
         self.protected_name = "_" + name
 
-    def __get__(self, instance, owner) -> None:
+    def __get__(self, instance: int or str, owner: str or int) -> None:
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance, value) -> None:
+    def __set__(self, instance: int or str, value: int) -> None:
         setattr(instance, self.protected_name, value)
         self.validate(value)
 
     @abstractmethod
-    def validate(self, value) -> None:
+    def validate(self, value: int) -> None:
         raise NotImplementedError("Subclasses should implement "
                                   "the validate method")
 
@@ -36,7 +36,7 @@ class OneOf(Validator):
     def __init__(self, options: list) -> None:
         self.options: list = options
 
-    def validate(self, value) -> None:
+    def validate(self, value: int) -> None:
         if value not in self.options:
             raise ValueError(f"Expected {value} to"
                              f" be one of {self.options}.")
