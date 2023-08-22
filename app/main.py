@@ -2,18 +2,18 @@ from abc import ABC, abstractmethod
 
 
 class Validator(ABC):
-    def __set_name__(self, instanse, name) -> None:
+    def __set_name__(self, instanse, name) -> None: # noqa
         self.protected_name = "_" + name
 
-    def __get__(self, instanse, owner):
+    def __get__(self, instanse, owner): # noqa
         return getattr(instanse, self.protected_name)
 
-    def __set__(self, instanse, value: int | str) -> None:
+    def __set__(self, instanse, value: int | str) -> None: # noqa
         self.validate(value)
         setattr(instanse, self.protected_name, value)
 
     @abstractmethod
-    def validate(self, value) -> None:
+    def validate(self, value: int | str) -> None:
         pass
 
 
