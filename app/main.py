@@ -1,27 +1,28 @@
 from abc import ABC, abstractmethod
+from typing import Union, List
 
 
 class Validator(ABC):
-    def __set_name__(self, owner, name) -> None:
-        self.public_name = name
-        self.protected_name = "_" + name
+    def __set_name__(self, owner: type, name: str) -> None:
+        self.public_name: str = name
+        self.protected_name: str = "_" + name
 
-    def __get__(self, instance, owner) -> int | str:
+    def __get__(self, instance: object, owner: type) -> Union[int, str]:
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance, value) -> None:
+    def __set__(self, instance: object, value: Union[int, str]) -> None:
         self.validate(value)
-        return setattr(instance, self.protected_name, value)
+        setattr(instance, self.protected_name, value)
 
     @abstractmethod
-    def validate(self, value) -> None:
+    def validate(self, value: Union[int, str]) -> None:
         pass
 
 
 class Number(Validator):
     def __init__(self, min_value: int, max_value: int) -> None:
-        self.min_value = min_value
-        self.max_value = max_value
+        self.min_value: int = min_value
+        self.max_value: int = max_value
 
     def validate(self, value: int) -> None:
         if not isinstance(value, int):
@@ -34,8 +35,8 @@ class Number(Validator):
 
 
 class OneOf(Validator):
-    def __init__(self, options: list[str]) -> None:
-        self.options = options
+    def __init__(self, options: List[str]) -> None:
+        self.options: List[str] = options
 
     def validate(self, value: str) -> None:
         if value not in self.options:
@@ -44,12 +45,12 @@ class OneOf(Validator):
 
 
 class BurgerRecipe:
-    buns = Number(2, 3)
-    cheese = Number(0, 2)
-    tomatoes = Number(0, 3)
-    cutlets = Number(1, 3)
-    eggs = Number(0, 2)
-    sauce = OneOf(["ketchup", "mayo", "burger"])
+    buns: Number = Number(2, 3)
+    cheese: Number = Number(0, 2)
+    tomatoes: Number = Number(0, 3)
+    cutlets: Number = Number(1, 3)
+    eggs: Number = Number(0, 2)
+    sauce: OneOf = OneOf(["ketchup", "mayo", "burger"])
 
     def __init__(self,
                  buns: int,
@@ -58,9 +59,9 @@ class BurgerRecipe:
                  cutlets: int,
                  eggs: int,
                  sauce: str) -> None:
-        self.buns = buns
-        self.cheese = cheese
-        self.tomatoes = tomatoes
-        self.cutlets = cutlets
-        self.eggs = eggs
-        self.sauce = sauce
+        self.buns: int = buns
+        self.cheese: int = cheese
+        self.tomatoes: int = tomatoes
+        self.cutlets: int = cutlets
+        self.eggs: int = eggs
+        self.sauce: str = sauce
