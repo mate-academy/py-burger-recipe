@@ -6,10 +6,10 @@ class Validator(ABC):
     def __set_name__(self, owner: BurgerRecipe, name: str = None) -> None:
         self.protected_name = "_" + name
 
-    def __get__(self, instance: BurgerRecipe, owner: type):
+    def __get__(self, instance: BurgerRecipe, owner: type) -> int | str:
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance: BurgerRecipe, value: int | str):
+    def __set__(self, instance: BurgerRecipe, value: int | str) -> None:
         self.validate(value)
         setattr(instance, self.protected_name, value)
 
@@ -27,7 +27,9 @@ class Number(Validator):
         if not isinstance(value, int):
             raise TypeError("Quantity should be integer.")
         if value < self.min_value or value > self.max_value:
-            raise ValueError(f"Quantity should not be less than {self.min_value} and greater than {self.max_value}.")
+            raise ValueError(f"Quantity should not be less than "
+                             f"{self.min_value} and greater "
+                             f"than {self.max_value}.")
 
 
 class OneOf(Validator):
