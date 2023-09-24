@@ -67,7 +67,7 @@ class OneOf(Validator):
             value: Any
     ) -> None:
         if value not in self.options:
-            raise ValueError(f"Expected {self.protected_name} to be one of {self.options}.")
+            raise ValueError(f"Expected {value} to be one of {self.options}.")
 
 
 class BurgerRecipe:
@@ -76,7 +76,7 @@ class BurgerRecipe:
     tomatoes = Number(0, 3)
     cutlets = Number(1, 3)
     eggs = Number(0, 2)
-    sauce = OneOf(["ketchup", "mayo", "burger"])
+    sauce = OneOf(("ketchup", "mayo", "burger"))
 
     def __init__(
             self,
