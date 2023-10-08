@@ -1,16 +1,16 @@
+from __future__ import annotations
 from abc import ABC, abstractmethod
-from typing import List
-from typing import Union
+from typing import List, Union
 
 
 class Validator(ABC):
-    def __set_name__(self, owner, name) -> None:
+    def __set_name__(self, owner: BurgerRecipe, name: str) -> None:
         self.protected_name = '_' + name
 
-    def __get__(self, instance, owner) -> Union[int, str]:
+    def __get__(self, instance: BurgerRecipe, owner: BurgerRecipe) -> Union[int, str]:
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance, value: Union[int, str]) -> None:
+    def __set__(self, instance: BurgerRecipe, value: Union[int, str]) -> None:
         setattr(instance, self.protected_name, self.validate(value))
 
     @abstractmethod
