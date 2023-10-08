@@ -1,14 +1,15 @@
 from abc import ABC, abstractmethod
+from typing import Callable
 
 
 class Validator(ABC):
-    def __set_name__(self, owner, name) -> None:
+    def __set_name__(self, owner: Callable, name: str) -> None:
         self.protected_name = f"_{name}"
 
-    def __get__(self, instance, owner) -> None:
+    def __get__(self, instance: Callable, owner: Callable) -> None:
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance, value):
+    def __set__(self, instance: Callable, value: int) -> None:
         self.validate(value)
         setattr(instance, self.protected_name, value)
 
@@ -32,10 +33,10 @@ class Number(Validator, ABC):
 
 
 class OneOf(Validator, ABC):
-    def __init__(self, options) -> None:
+    def __init__(self, options: str) -> None:
         self.options = options
 
-    def validate(self, value):
+    def validate(self, value: str) -> None:
         if value not in self.options:
             raise ValueError(f"Expected {value} to be one of {self.options}.")
 
@@ -54,7 +55,7 @@ class BurgerRecipe:
                  tomatoes: int,
                  cutlets: int,
                  eggs: int,
-                 sauce) -> None:
+                 sauce: str) -> None:
         self.buns = buns
         self.cheese = cheese
         self.tomatoes = tomatoes
