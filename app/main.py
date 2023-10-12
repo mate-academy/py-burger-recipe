@@ -1,14 +1,24 @@
 from abc import abstractmethod, ABC
+from typing import Type, Optional
 
 
 class Validator(ABC):
-    def __set_name__(self, owner, name) -> None:
+    def __set_name__(self, owner: Type, name: str) -> None:
         self.protected_name = "_" + name
 
-    def __get__(self, instance, owner) -> int:
+    def __get__(
+        self,
+        instance: Optional[Type] | None,
+        owner: Type
+    ) -> int | str:
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance, value) -> None:
+    def __set__(
+        self,
+        instance: Optional[Type] | None,
+        value: int | str
+    ) -> None:
+        self.validate(value)
         setattr(instance, self.protected_name, value)
 
     @abstractmethod
@@ -27,9 +37,9 @@ class Number(Validator):
         else:
             if not (self.min_value <= value <= self.max_value):
                 raise ValueError(
-                    f'Quantity should not be less than'
-                    f' {self.min_value} and greater'
-                    f' than {self.max_value}.'
+                    f"Quantity should not be less than"
+                    f" {self.min_value} and greater"
+                    f" than {self.max_value}."
                 )
 
 
@@ -40,7 +50,7 @@ class OneOf(Validator):
     def validate(self, value: int) -> None:
         if value not in self.options:
             raise ValueError(f"Expected {value}"
-                             f" to be one of {self.options}")
+                             f" to be one of {self.options}.")
 
 
 class BurgerRecipe:
@@ -49,7 +59,7 @@ class BurgerRecipe:
     tomatoes = Number(0, 3)
     cutlets = Number(1, 3)
     eggs = Number(0, 2)
-    sauce = OneOf(('ketchup', 'mayo', 'burger'))
+    sauce = OneOf(("ketchup", "mayo", "burger"))
 
     def __init__(
         self,
