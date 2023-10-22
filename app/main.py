@@ -3,11 +3,11 @@ from typing import Any
 
 
 class Validator(ABC):
-    def __set_name__(self, name: str) -> None:
+    def __set_name__(self, owner: Any, name: str) -> None:
         self.public_name = name
         self.protected_name = "_" + name
 
-    def __get__(self, instance: Any) -> Any:
+    def __get__(self, instance: Any, owner: Any) -> Any:
         value = getattr(instance, self.protected_name)
         return value
 
