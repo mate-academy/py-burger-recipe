@@ -3,27 +3,27 @@ from abc import ABC, abstractmethod
 
 class Validator(ABC):
 
-    def __set_name__(self, owner, name) -> None:
-        self.protected_name = '_' + name
+    def __set_name__(self, owner: "BurgerRecipe", name: str) -> None:
+        self.protected_name = "_" + name
 
-    def __get__(self, obj, objtype=None) -> int | str:
+    def __get__(self, obj: str, objtype: str = None) -> int | str:
         return getattr(obj, self.protected_name)
 
-    def __set__(self, obj, value) -> None:
+    def __set__(self, obj: str, value: int) -> None:
         self.validate(value)
         setattr(obj, self.protected_name, value)
 
     @abstractmethod
-    def validate(self, value) -> None:
+    def validate(self, value: int) -> None:
         pass
 
 
 class Number(Validator):
-    def __init__(self, min_value: int, max_value: int):
+    def __init__(self, min_value: int, max_value: int) -> None:
         self.min_value = min_value
         self.max_value = max_value
 
-    def validate(self, value) -> None:
+    def validate(self, value: int) -> None:
         if not isinstance(value, int):
             raise TypeError("Quantity should be integer.")
         if not self.min_value <= value <= self.max_value:
@@ -35,10 +35,10 @@ class Number(Validator):
 
 class OneOf(Validator):
 
-    def __init__(self, options) -> None:
+    def __init__(self, options: tuple) -> None:
         self.options = options
 
-    def validate(self, value) -> None:
+    def validate(self, value: str) -> None:
         if value not in self.options:
             raise ValueError(f"Expected {value} to be one of {self.options}.")
 
