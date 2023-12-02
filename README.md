@@ -5,7 +5,8 @@ before starting.
 
 You work at the **In-N-Out** and make delicious burgers. 
 
-Create the `BurgerRecipe` class. Its `__init__` method should accept and save the number of ingredients needed to make a burger, such as cheese, tomatoes, cutlets, eggs, buns, and sauce.
+Create the `BurgerRecipe` class. Its `__init__` method should accept and save the number of ingredients needed to make a burger, such as cheese, 
+tomatoes, cutlets, eggs, buns, and sauce.
 
 ```python
 cheese_burger = Burger(buns=2, cheese=2, tomatoes=1, cutlets=1, eggs=1, sauce="ketchup")
@@ -35,12 +36,16 @@ Implement the `Validator` class that will have such methods:
 Also, you need to implement the `Number` class, which is the `Validator` child class. It should have:
 
 - the `__init__` method, which accepts and stores the `min_value` and the `max_value`;
-- the `validate` method, which checks the value type, and if the type is incorrect, it must raise the `TypeError` exception with the `Quantity should be integer.` message.
-Then it should check whether the value is within `min_value` and `max_value`. If it’s not, it should raise the `ValueError` with the `Quantity should not be less than {self.min_value} and greater than {self.max_value}.` message.
+- the `validate` method, which checks the value type, and if the type is incorrect, it must 
+- raise the `TypeError` exception with the `Quantity should be integer.` message.
+Then it should check whether the value is within `min_value` and `max_value`. If it’s not, it should raise the 
+- `ValueError` with the `Quantity should not be less than {self.min_value} and greater than {self.max_value}.` message.
 
-Last but not least, you need to implement the `OneOf` validator, which is the child class of the `Validator` class. It allows to choose one of the provided values and should have:
+Last but not least, you need to implement the `OneOf` validator, which is the child class of the `Validator` class. 
+It allows to choose one of the provided values and should have:
 - the `__init__` method, which accepts and stores `options`;
-- the `validate` method, which accepts the `value` and checks if it’s one of the provided options and, if not — raises the `ValueError` with the `Expected {value} to be one of {self.options}.` message.
+- the `validate` method, which accepts the `value` and checks if it’s one of the provided options and, if not — raises the `ValueError` 
+- with the `Expected {value} to be one of {self.options}.` message.
 
 ```python
 burger = BurgerRecipe(buns="1", cheese="1", tomatoes="1", cutlets="1", eggs="1", sauce="mayo")
