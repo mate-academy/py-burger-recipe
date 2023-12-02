@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from typing import Any
 
 
@@ -41,23 +41,6 @@ class OneOf(Validator):
     def validate(self, value: int) -> None:
         if value not in self.options:
             raise ValueError(f"Expected {value} to be one of {self.options}.")
-
-
-class BurgerRecipe:
-
-    def __init__(self,
-                 buns: int,
-                 cheese: int,
-                 tomatoes: int,
-                 cutlets: int,
-                 eggs: int,
-                 sauce: str):
-        self.buns = buns
-        self.cheese = cheese
-        self.tomatoes = tomatoes
-        self.cutlets = cutlets
-        self.eggs = eggs
-        self.sauce = sauce
 
 
 class BurgerRecipe:
