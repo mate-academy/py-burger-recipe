@@ -1,8 +1,8 @@
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from typing import Any
 
 
-class Validator:
+class Validator(ABC):
 
     def __set_name__(self, owner: Any, name: str) -> None:
         self.protected_name = "_" + name
