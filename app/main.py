@@ -13,7 +13,7 @@ class Validator(ABC):
     def __get__(self,
                 obj: BurgerRecipe,
                 obj_type: type,
-                ):
+                ) -> None:
         return getattr(obj, self.protected_name)
 
     def __set__(self,
@@ -48,7 +48,7 @@ class Number(Validator):
 
 class OneOf(Validator):
 
-    def __init__(self, options: tuple[str]) -> None:
+    def __init__(self, options: tuple) -> None:
         self.options = options
 
     def validate(self, value: str) -> None:
@@ -63,7 +63,7 @@ class BurgerRecipe:
     tomatoes = Number(0, 3)
     cutlets = Number(1, 3)
     eggs = Number(0, 2)
-    sauce = OneOf(('ketchup', 'mayo', 'burger'))
+    sauce = OneOf(("ketchup", "mayo", "burger"))
 
     def __init__(self,
                  buns: int,
