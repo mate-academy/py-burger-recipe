@@ -33,7 +33,7 @@ class Number(Validator, ABC):
 
 
 class OneOf(Validator, ABC):
-    def __init__(self, options: None) -> None:
+    def __init__(self, options: str) -> None:
         self.options = options
 
     def validate(self, value: int) -> None:
