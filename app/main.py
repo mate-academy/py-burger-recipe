@@ -2,13 +2,13 @@ from abc import ABC, abstractmethod
 
 
 class Validator(ABC):
-    def __set_name__(self, owner, name: str) -> None:
+    def __set_name__(self, owner: any, name: str) -> None:
         self.protected_name = "_" + name
 
-    def __get__(self, instance, owner) -> None:
+    def __get__(self, instance: any, owner: any) -> None:
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance, value) -> None:
+    def __set__(self, instance: any, value: int) -> None:
         self.validate(value)
         setattr(instance, self.protected_name, value)
 
