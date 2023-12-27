@@ -3,7 +3,7 @@
 **Please note:** read [the guideline](https://github.com/mate-academy/py-task-guideline/blob/main/README.md)
 before starting.
 
-You work at the **In-N-Out** and make delicious burgers. 
+You work at the **In-N-Out** and make delicious burgers.
 
 Create the `BurgerRecipe` class. Its `__init__` method should accept and save the number of ingredients needed to make a burger, such as cheese, tomatoes, cutlets, eggs, buns, and sauce.
 
@@ -20,7 +20,7 @@ You can make burgers with a different number of ingredients and different sauces
 - `eggs` — can range from `0` to `2`;
 - `sauce` — can be `ketchup`, `mayo`, or `burger`.
 
-So, it would be convenient to use descriptors to ensure that the number of ingredients is `int` in a range mentioned above 
+So, it would be convenient to use descriptors to ensure that the number of ingredients is `int` in a range mentioned above
 and the sauce is one of `ketchup`, `mayo`, or `burger`.
 
 The main task is to create the `BurgerRecipe` class, and for convenience, you should consider the descriptors.
@@ -49,7 +49,7 @@ burger = BurgerRecipe(buns="1", cheese="1", tomatoes="1", cutlets="1", eggs="1",
 burger = BurgerRecipe(buns=1, cheese=10, tomatoes=1, cutlets=1, eggs=1, sauce="mayo")
  # ValueError: Quantity should not be less than 2 and greater than 3.
 
-burger = BurgerRecipe(buns=2, cheese=1, tomatoes=1, cutlets=1, eggs=1, sauce="mustard") 
+burger = BurgerRecipe(buns=2, cheese=1, tomatoes=1, cutlets=1, eggs=1, sauce="mustard")
 # ValueError: Expected mustard to be one of ('ketchup', 'mayo', 'burger').
 
 burger = BurgerRecipe(buns=2, cheese=1, tomatoes=1, cutlets=1, eggs=1, sauce="ketchup")
