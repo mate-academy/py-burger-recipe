@@ -2,47 +2,43 @@ from abc import ABC, abstractmethod
 
 
 class Validator(ABC):
-    def __set_name__(self, owner, name: str) -> None:
+    def __set_name__(self, owner: int, name: str) -> None:
         self.protected_name = "_" + name
 
-    def __get__(self, instance) -> int:
+    def __get__(self, instance: int | str, owner: int) -> int:
+        self.validate(getattr(instance, self.protected_name))
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance, value) -> None:
+    def __set__(self, instance: int | str, value: int | str) -> None:
+        self.validate(value)
         setattr(instance, self.protected_name, value)
 
     @abstractmethod
-    def validate(self) -> None:
+    def validate(self, value: int | str) -> None:
         pass
 
 
 class Number(Validator, ABC):
-    def __init__(self, min_value, max_value) -> None:
+    def __init__(self, min_value: int, max_value: int) -> None:
         self.min_value = min_value
         self.max_value = max_value
 
-    def validate(self, value) -> None:
+    def validate(self, value: int | str) -> None:
         if not isinstance(value, int):
             raise TypeError("Quantity should be integer.")
 
-        if (
-            self.min_value is not None
-            and value < self.min_value
-            or self.max_value is not None
-            and value > self.max_value
-        ):
+        if not (self.min_value <= value <= self.max_value):
             raise ValueError(
-                f"Quantity should not "
-                f"be less than {self.min_value} "
+                f"Quantity should not be less than {self.min_value}"
                 f"and greater than {self.max_value}."
             )
 
 
 class OneOf(Validator, ABC):
-    def __init__(self, options) -> None:
+    def __init__(self, options: None) -> None:
         self.options = options or set()
 
-    def validate(self, value) -> None:
+    def validate(self, value: int | str) -> None:
         if value not in self.options:
             raise ValueError(f"Expected {value} to be one of {self.options}.")
 
@@ -53,15 +49,15 @@ class BurgerRecipe:
     tomatoes = Number(min_value=0, max_value=3)
     cutlets = Number(min_value=1, max_value=3)
     eggs = Number(min_value=0, max_value=2)
-    sauce = OneOf(options={"ketchup", "mayo", "burger"})
+    sauce = OneOf(options=("ketchup", "mayo", "burger"))
 
     def __init__(
         self,
+        buns: int = 0,
         cheese: int = 0,
         tomatoes: int = 0,
         cutlets: int = 0,
         eggs: int = 0,
-        buns: int = 0,
         sauce: int = 0,
     ) -> None:
         self.cheese = cheese
@@ -70,24 +66,3 @@ class BurgerRecipe:
         self.eggs = eggs
         self.buns = buns
         self.sauce = sauce
-
-
-if __name__ == "__main__":
-    burger = BurgerRecipe(
-        buns="1", cheese="1", tomatoes="1", cutlets="1", eggs="1", sauce="mayo"
-    )
-    print(burger.buns)
-
-    burger = BurgerRecipe(
-        buns=1, cheese=10, tomatoes=1, cutlets=1, eggs=1, sauce="mayo"
-    )
-    print(burger.cheese)
-
-    burger = BurgerRecipe(
-        buns=2, cheese=1, tomatoes=1, cutlets=1, eggs=1, sauce="mustard"
-    )
-    print(burger.sauce)
-
-    burger = BurgerRecipe(
-        buns=2, cheese=1, tomatoes=1, cutlets=1, eggs=1, sauce="ketchup"
-    )
