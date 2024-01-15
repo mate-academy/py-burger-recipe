@@ -2,18 +2,18 @@ from abc import ABC, abstractmethod
 
 
 class Validator(ABC):
-    def __set_name__(self, owner, name) -> None:
+    def __set_name__(self, owner: None, name: str) -> None:
         self.protected_name = "_" + name
 
-    def __get__(self, instance, owner) -> None:
+    def __get__(self, instance: None, owner: None) -> None:
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance, value) -> None:
+    def __set__(self, instance: None, value: None) -> None:
         self.validate(instance, value)
         setattr(instance, self.protected_name, value)
 
     @abstractmethod
-    def validate(self, instance, value) -> None:
+    def validate(self, instance: None, value: None) -> None:
         pass
 
 
@@ -22,7 +22,7 @@ class Number(Validator):
         self.min_value = min_value
         self.max_value = max_value
 
-    def validate(self, instance, value) -> None:
+    def validate(self, instance: None, value: None) -> None:
         if not (isinstance(value, int)):
             raise TypeError("Quantity should be integer.")
         if not (self.min_value <= value <= self.max_value):
@@ -32,10 +32,10 @@ class Number(Validator):
 
 
 class OneOf(Validator):
-    def __init__(self, options) -> None:
+    def __init__(self, options: None) -> None:
         self.options = options
 
-    def validate(self, instance, value) -> None:
+    def validate(self, instance: None, value: None) -> None:
         if value not in self.options:
             raise ValueError(f"Expected {value} to be one of {self.options}.")
 
