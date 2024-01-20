@@ -38,14 +38,14 @@ def test_validate_is_abstract_method():
     ["cheese", "tomatoes", "cutlets", "eggs", "buns"],
 )
 def test_number_instance_has_attrs(ingredient):
-    attrs = {"min_value", "max_value", "protected_name"}
+    attrs = {"min_value", "max_value", "_protected_name"}
     assert attrs.issubset(
         set(BurgerRecipe.__dict__[ingredient].__dict__.keys())
     ), f"Descriptor Number for {ingredient} should have such attributes {attrs}"
 
 
 def test_one_of_instance_has_attrs():
-    attributes = {"options", "protected_name"}
+    attributes = {"options", "_protected_name"}
     assert attributes.issubset(
         set(BurgerRecipe.__dict__["sauce"].__dict__.keys())
     ), f"Descriptor OneOf for `sauce` should have such attributes {attributes}"
@@ -64,8 +64,8 @@ def test_one_of_instance_has_attrs():
 )
 def test_validator_protected_name(attr, protected_attr):
     assert (
-        BurgerRecipe.__dict__[attr].__dict__["protected_name"] == protected_attr
-    ), f"For attribute '{attr}' descriptor Validator should create 'protected_name' equals to '{protected_attr}'"
+        BurgerRecipe.__dict__[attr].__dict__["_protected_name"] == protected_attr
+    ), f"For attribute '{attr}' descriptor Validator should create '_protected_name' equals to '{protected_attr}'"
 
 
 @pytest.mark.parametrize(
