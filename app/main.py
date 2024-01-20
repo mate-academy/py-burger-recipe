@@ -1,17 +1,18 @@
+from __future__ import annotations
 from abc import abstractmethod, ABC
 
 
 class Validator(ABC):
 
-    def __set_name__(self, owner, name) -> None:
+    def __set_name__(self, owner: BurgerRecipe, name: str) -> None:
         self._protected_name = "_" + name
 
-    def __get__(self, instance, owner) -> str:
-        return instance.__dict__[self._protected_name]
+    def __get__(self, instance: BurgerRecipe, owner: BurgerRecipe) -> str:
+        return getattr(instance, self._protected_name)
 
-    def __set__(self, instance, value) -> None:
+    def __set__(self, instance: BurgerRecipe, value: int | str) -> None:
         self.validate(value)
-        instance.__dict__[self._protected_name] = value
+        setattr(instance, self._protected_name, value)
 
     @abstractmethod
     def validate(self, value: int) -> None:
@@ -27,11 +28,13 @@ class Number(Validator):
         if not isinstance(value, int):
             raise TypeError("Quantity should be integer.")
         if not (self.min_value <= value <= self.max_value):
-            raise ValueError(f"Quantity should not be less than {self.min_value} and greater than {self.max_value}.")
+            raise ValueError(f"Quantity should not be "
+                             f"less than {self.min_value} "
+                             f"and greater than {self.max_value}.")
 
 
 class OneOf(Validator):
-    def __init__(self, options) -> None:
+    def __init__(self, options: tuple) -> None:
         self.options = options
 
     def validate(self, value: int) -> None:
@@ -47,7 +50,14 @@ class BurgerRecipe:
     eggs = Number(0, 2)
     sauce = OneOf(("ketchup", "mayo", "burger"))
 
-    def __init__(self, buns: int, cheese: int, tomatoes: int, cutlets: int, eggs: int, sauce: str) -> None:
+    def __init__(
+            self, buns: int,
+            cheese: int,
+            tomatoes: int,
+            cutlets: int,
+            eggs: int,
+            sauce: str
+    ) -> None:
         self.buns = buns
         self.cheese = cheese
         self.tomatoes = tomatoes
