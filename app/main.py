@@ -1,19 +1,20 @@
 from abc import abstractmethod, ABC
+from typing import Any
 
 
 class Validator(ABC):
-    def __set_name__(self, owner, name) -> None:
+    def __set_name__(self, owner: Any, name: Any) -> None:
         self.protected_name = "_" + name
 
-    def __get__(self, instance, owner) -> int:
+    def __get__(self, instance: Any, owner: Any) -> int:
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance, value) -> None:
+    def __set__(self, instance: Any, value: Any) -> None:
         self.validate(value)
         setattr(instance, self.protected_name, value)
 
     @abstractmethod
-    def validate(self, value) -> None:
+    def validate(self, value: Any) -> None:
         pass
 
 
