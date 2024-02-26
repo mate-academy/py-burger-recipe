@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 
 
+
+
 class Validator(ABC):
     def __set_name__(self, owner: any, name: str) -> None:
         self.protected_name = f"_{name}"
