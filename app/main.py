@@ -1,19 +1,20 @@
+from __future__ import annotations
 from abc import ABC, abstractmethod
 
 
 class Validator(ABC):
-    def __set_name__(self, owner, name):
+    def __set_name__(self, owner: BurgerRecipe, name: str) -> None:
         self.protected_name = "_" + name
 
-    def __get__(self, instance, owner):
+    def __get__(self, instance: BurgerRecipe, owner: BurgerRecipe) -> str:
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance, value):
+    def __set__(self, instance: BurgerRecipe, value: int | str) -> None:
         self.validate(value)
         setattr(instance, self.protected_name, value)
 
     @abstractmethod
-    def validate(self, value):
+    def validate(self, value: int | str) -> None:
         pass
 
 
