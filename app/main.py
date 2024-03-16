@@ -1,5 +1,6 @@
 class Validator:
     pass
+    pass2
 
 
 class Number:
