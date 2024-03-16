@@ -1,8 +1,7 @@
 class Validator:
     pass
     pass2
-    pass3
-    pass4
+    pass
 
 
 class Number:
