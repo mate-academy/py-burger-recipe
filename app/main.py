@@ -1,5 +1,15 @@
 class Validator:
 
+    def __set_name__(self, owner, name):
+        self.protected_name = "_" + name
+
+    def __get__(self, instance, owner):
+        return getattr(instance, self.protected_name)
+
+
+
+
+
 
 class Number:
     pass
