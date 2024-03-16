@@ -6,7 +6,6 @@ from abc import abstractmethod, ABC
 class Validator(ABC):
     def __set_name__(self, instance: Any, name: str) -> None:
         self.protected_name = "_" + name
-        # self.public_name = name
 
     def __get__(self, instance: BurgerRecipe, owner: BurgerRecipe) -> Any:
         return getattr(instance, self.protected_name)
