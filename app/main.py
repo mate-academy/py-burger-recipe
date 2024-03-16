@@ -30,13 +30,23 @@ class Number(Validator):
             raise ValueError(f"Quantity should not be less than {self.min_value} and greater than {self.max_value}.")
 
 
+class OneOf(Validator):
+    def __init__(self, options):
+        self.options = options
 
-
-class OneOf:
-    pass
+    def validate(self, value):
+        if value not in self.options:
+            raise ValueError(f"Expected {value} to be one of {self.options}.")
 
 
 class BurgerRecipe:
+    buns = Number(2, 3)
+    cheese = Number(0, 2)
+    tomatoes = Number(0, 3)
+    cutlets = Number(1, 3)
+    eggs = Number(0, 2)
+    sauce = OneOf(["ketchup", "mayo", "burger"])
+
     def __init__(self,
                  buns: int,
                  cheese: int,
