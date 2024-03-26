@@ -14,7 +14,7 @@ class Validator(ABC):
         self.validate(value)
 
     @abstractmethod
-    def validate(value: (int, str)) -> None:
+    def validate(self, value: (int, str)) -> None:
         pass
 
 
