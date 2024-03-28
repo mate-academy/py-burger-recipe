@@ -5,9 +5,9 @@ from typing import Any
 class Validator(ABC):
     def __set_name__(self, owner: Any, name: str) -> None:
         self.public_name = name
-        self.protected_name = '_' + name
+        self.protected_name = "_" + name
 
-    def __get__(self, obj: Any, instance=None) -> Any:
+    def __get__(self, obj: Any, instance: Any = None) -> Any:
         print(obj, instance)
         value = getattr(obj, self.protected_name)
         return value
@@ -15,7 +15,6 @@ class Validator(ABC):
     def __set__(self, obj: Any, value: Any) -> None:
         self.validate(value)
         setattr(obj, self.protected_name, value)
-
 
     @abstractmethod
     def validate(self, value: Any) -> None:
@@ -45,6 +44,7 @@ class OneOf(Validator):
         if value not in self.options:
             raise ValueError(f"Expected {value} to be one of {self.options}.")
 
+
 class BurgerRecipe:
     buns = Number(2, 3)
     cheese = Number(0, 2)
@@ -53,7 +53,15 @@ class BurgerRecipe:
     eggs = Number(0, 2)
     sauce = OneOf(("ketchup", "mayo", "burger"))
 
-    def __init__(self, buns: int, cheese: int, tomatoes: int, cutlets: int, eggs: int, sauce: str) -> None:
+    def __init__(
+            self,
+            buns: int,
+            cheese: int,
+            tomatoes: int,
+            cutlets: int,
+            eggs: int,
+            sauce: str
+    ) -> None:
         self.buns = buns
         self.cheese = cheese
         self.tomatoes = tomatoes
