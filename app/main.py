@@ -26,7 +26,7 @@ class Number(Validator):
         self.min_value = min_value
         self.max_value = max_value
 
-    def validate(self, value: int) -> None:
+    def validate(self, value: int | str) -> None:
         if not isinstance(value, int):
             raise TypeError("Quantity should be integer.")
         if not (self.min_value <= value <= self.max_value):
@@ -60,7 +60,7 @@ class BurgerRecipe:
             tomatoes: int,
             cutlets: int,
             eggs: int,
-            sauce: OneOf
+            sauce: str
     ) -> None:
         self.buns = buns
         self.cheese = cheese
