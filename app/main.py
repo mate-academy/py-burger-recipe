@@ -6,7 +6,7 @@ class Validator(ABC):
     def __set_name__(self, owner: type, name: str) -> None:
         self.protected_name = "_" + name
 
-    def __get__(self, instance: object, owner: type) -> str:
+    def __get__(self, instance: object, owner: type) -> str | int:
         return getattr(instance, self.protected_name)
 
     def __set__(self, instance: object, value: int | str) -> None:
@@ -43,12 +43,12 @@ class OneOf(Validator):
 
 class BurgerRecipe:
     def __init__(self,
-                 buns: int,
-                 cheese: int,
-                 tomatoes: int,
-                 cutlets: int,
-                 eggs: int,
-                 sauce: int
+                 buns: str | int,
+                 cheese: str | int,
+                 tomatoes: str | int,
+                 cutlets: str | int,
+                 eggs: str | int,
+                 sauce: str | int
                  ) -> None:
         self.buns = buns
         self.cheese = cheese
