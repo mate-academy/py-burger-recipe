@@ -1,12 +1,13 @@
 from __future__ import annotations
 from abc import abstractmethod, ABC
+from typing import Any
 
 
 class Validator(ABC):
     def __set_name__(self, owner: type, name: str) -> None:
         self.protected_name = "_" + name
 
-    def __get__(self, instance: object, owner: type) -> str | int:
+    def __get__(self, instance: object, owner: type) -> Any:
         return getattr(instance, self.protected_name)
 
     def __set__(self, instance: object, value: int | str) -> None:
@@ -48,7 +49,7 @@ class BurgerRecipe:
                  tomatoes: str | int,
                  cutlets: str | int,
                  eggs: str | int,
-                 sauce: str | int
+                 sauce: str
                  ) -> None:
         self.buns = buns
         self.cheese = cheese
