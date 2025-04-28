@@ -6,6 +6,8 @@ class Validator(ABC):
         self.protected_name = "_" + name
 
     def __get__(self, instance: object, owner: type) -> object:
+        if instance is None:
+            return self  # Повертаємо сам дескриптор, якщо доступ через клас
         return getattr(instance, self.protected_name)
 
     def __set__(self, instance: object, value: object) -> None:
@@ -27,8 +29,8 @@ class Number(Validator):
             raise TypeError("Quantity should be integer.")
         if value < self.min_value or value > self.max_value:
             raise ValueError(
-                f"Quantity should not be less than {self.min_value} "
-                f"and greater than {self.max_value}."
+                f"Quantity should not be less than "
+                f"{self.min_value} and greater than {self.max_value}."
             )
 
 
