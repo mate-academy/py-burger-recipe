@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from tkinter.constants import NUMERIC
 
 
 class Validator(ABC):
