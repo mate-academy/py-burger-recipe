@@ -1,21 +1,22 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from typing import Any
 
 
 class Validator(ABC):
-    def __set_name__(self, owner: str, name: str) -> None:
+    def __set_name__(self, owner: type, name: str) -> None:
         self.protected_name = "_" + name
 
-    def __get__(self, instance: str, owner: str) -> None:
+    def __get__(self, instance: object, owner: type) -> Any:
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance: str, value: str) -> None:
+    def __set__(self, instance: object, value: str) -> None:
         self.validate(value)
         setattr(instance, self.protected_name, value)
 
     @abstractmethod
-    def validate(self, value: str | int) -> str | int:
+    def validate(self, value: str | int) -> None:
         pass
 
 
@@ -37,7 +38,7 @@ class Number(Validator):
 
 
 class OneOf(Validator):
-    def __init__(self, options: tuple[str, str, str]) -> None:
+    def __init__(self, options: tuple[str, ...]) -> None:
         self.options = options
 
     def validate(self, value: str) -> None:
