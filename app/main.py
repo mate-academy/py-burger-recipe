@@ -14,6 +14,8 @@ class Validator(ABC):
         obj: object,
         objtype: type = None,
     ) -> int | str:
+        if obj is None:
+            return self
         return getattr(obj, self.protected_name)
 
     @abstractmethod
