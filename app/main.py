@@ -12,7 +12,7 @@ class Validator(ABC):
     def __get__(
         self,
         obj: object,
-        objtype: type | None = None,
+        objtype: type = None,
     ) -> int | str:
         return getattr(obj, self.protected_name)
 
