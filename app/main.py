@@ -1,4 +1,4 @@
-from app.validator import Number, OneOf
+from app.validator import Validator, Number, OneOf
 
 
 class BurgerRecipe:
