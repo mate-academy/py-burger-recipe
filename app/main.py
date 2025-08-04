@@ -14,8 +14,9 @@ class Validator(ABC):
             setattr(instance, self.protected_name, value)
 
     @abstractmethod
-    def validate(self, value: Any) -> None:
+    def validate(self, value: Any) -> bool:
         pass
+
 
 class Number(Validator):
 
