@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 class Validator:
     pass
 
@@ -11,4 +14,18 @@ class OneOf:
 
 
 class BurgerRecipe:
-    pass
+    def __init__(
+            self: BurgerRecipe,
+            buns: int,
+            cheese: int,
+            tomatoes: int,
+            cutlets: int,
+            eggs: int,
+            sauce: str
+    ) -> None:
+        self.buns = buns
+        self.cheese = cheese
+        self.tomatoes = tomatoes
+        self.cutlets = cutlets
+        self.eggs = eggs
+        self.sauce = sauce
