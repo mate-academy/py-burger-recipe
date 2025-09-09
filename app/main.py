@@ -7,6 +7,8 @@ class Validator(ABC):
         self.protected_name = "_" + name
 
     def __get__(self, instance: Any, owner: type) -> int | str:
+        if instance is None:
+            return self
         return getattr(instance, self.protected_name)
 
     def __set__(self, instance: Any, value: Any) -> None:
@@ -34,13 +36,12 @@ class Number(Validator):
 
 
 class OneOf(Validator):
-    def __init__(self) -> None:
-        self.options = ["ketchup", "mayo", "burger"]
+    def __init__(self, options: list) -> None:
+        self.options = tuple(options)
 
     def validate(self, value: Any) -> ValueError | None:
         if value not in self.options:
-            raise ValueError(f"Expected {value} to be one of "
-                             f"('ketchup', 'mayo', 'burger').")
+            raise ValueError(f"Expected {value} to be one of {self.options}.")
 
 
 class BurgerRecipe:
@@ -49,7 +50,7 @@ class BurgerRecipe:
     tomatoes = Number(0, 3)
     cutlets = Number(1, 3)
     eggs = Number(0, 2)
-    sauce = OneOf()
+    sauce = OneOf(["ketchup", "mayo", "burger"])
 
     def __init__(self,
                  buns: int,
