@@ -12,12 +12,12 @@ class Validator(ABC):
         return getattr(instance, self.protected_name)
 
     @abstractmethod
-    def __set__(self, instance: BurgerRecipe, value: int | str) -> None:
-        pass
-
-    @abstractmethod
     def validate(self, value: str | int) -> None:
         pass
+
+    def __set__(self, instance: BurgerRecipe, value: int | str) -> None:
+        self.validate(value)
+        setattr(instance, self.protected_name, value)
 
 
 class Number(Validator):
@@ -28,14 +28,10 @@ class Number(Validator):
     def validate(self, value: int) -> None:
         if not isinstance(value, int):
             raise TypeError("Quantity should be integer.")
-
-    def __set__(self, instance: BurgerRecipe, value: int) -> None:
-        self.validate(value)
         if not self.min_value <= value <= self.max_value:
             raise ValueError(
                 f"Quantity should not be less than {self.min_value}"
                 f" and greater than {self.max_value}.")
-        setattr(instance, self.protected_name, value)
 
 
 class OneOf(Validator):
@@ -46,10 +42,6 @@ class OneOf(Validator):
         if value not in self.options:
             raise ValueError(
                 f"Expected {value} to be one of {tuple(self.options)}.")
-
-    def __set__(self, instance: BurgerRecipe, value: str) -> None:
-        self.validate(value)
-        setattr(instance, self.protected_name, value)
 
 
 class BurgerRecipe:
