@@ -11,6 +11,8 @@ class Validator(ABC):
         self.protected_name = "_" + name
 
     def __get__(self, instance: Any, owner: Any) -> None:
+        if instance is None:
+            return self.protected_name
         return getattr(instance, self.protected_name)
 
     def __set__(self, instance: Any, value: Any) -> None:
