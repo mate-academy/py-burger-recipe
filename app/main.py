@@ -27,7 +27,10 @@ class Number(Validator):
         if type(value) is not int:
             raise TypeError("Quantity should be integer.")
         if value < self.min_value or value > self.max_value:
-            raise ValueError("Quantity should be between {} and {}.")
+            raise ValueError(
+                f"Quantity should not be less than {self.min_value} "
+                f"and greater than {self.max_value}."
+            )
 
 
 class OneOf(Validator):
