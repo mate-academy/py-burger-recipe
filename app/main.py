@@ -3,10 +3,6 @@ from typing import Any
 
 
 class Validator(ABC):
-    def __init__(self, min_value: int, max_value: int) -> None:
-        self.min_value = min_value
-        self.max_value = max_value
-
     def __set_name__(self, owner: type, name: str) -> None:
         self.protected_name = "_" + name
 
@@ -23,14 +19,18 @@ class Validator(ABC):
 
 
 class Number(Validator):
+    def __init__(self, min_value: int, max_value: int) -> None:
+        self.min_value = min_value
+        self.max_value = max_value
+
     def validate(self, value: int) -> None:
-        if not isinstance(value, (int, float)):
+        if not isinstance(value, int):
             raise TypeError("Quantity should be integer.")
 
         if not (self.min_value <= value <= self.max_value):
             raise ValueError(
-                "Quantity should not be less than {self.min_value} "
-                "and greater than {self.max_value}"
+                f"Quantity should not be less than {self.min_value} "
+                f"and greater than {self.max_value}"
             )
 
 
