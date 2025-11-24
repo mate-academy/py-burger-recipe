@@ -120,8 +120,8 @@ def test_incorrect_type_of_sauce():
     ],
 )
 def test_ingredient_out_of_range(ingredients):
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError) as e:
         BurgerRecipe(*ingredients)
-        pytest.fail(msg="Text of the 'ValueError' should equal to "
-                        "Quantity should not be less than attribute minvalue "
-                        "and greater than attribute maxvalue.")
+    assert (
+        str(e.value) == "Quantity should not be less than attribute minvalue and greater than attribute maxvalue."
+    ), "Text of the 'ValueError' should equal to 'Quantity should not be less than attribute minvalue and greater than attribute maxvalue.'"
