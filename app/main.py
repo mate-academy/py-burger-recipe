@@ -2,27 +2,27 @@ from abc import abstractmethod, ABC
 
 
 class Validator(ABC):
-    def __set_name__(self, owner, name):
+    def __set_name__(self, owner: type, name: str) -> None:
         self.protected_name = "_" + name
 
-    def __get__(self, instance, owner):
+    def __get__(self, instance: any, owner: type) -> any:
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance, value):
+    def __set__(self, instance: any, value: any) -> None:
         self.validate(value)
         setattr(instance, self.protected_name, value)
 
     @abstractmethod
-    def validate(self, value):
+    def validate(self, value: any) -> None:
         pass
 
 
 class Number(Validator):
-    def __init__(self, min_value, max_value):
+    def __init__(self, min_value: int, max_value: int) -> None:
         self.min_value = min_value
         self.max_value = max_value
 
-    def validate(self, value):
+    def validate(self, value: int) -> None:
         if not isinstance(value, int):
             raise TypeError("Quantity should be integer.")
         if not (self.min_value <= value <= self.max_value):
@@ -32,10 +32,10 @@ class Number(Validator):
 
 
 class OneOf(Validator):
-    def __init__(self, options):
+    def __init__(self, options: tuple) -> None:
         self.options = options
 
-    def validate(self, value):
+    def validate(self, value: str) -> None:
         if value not in self.options:
             raise ValueError(f"Expected {value} to be one of {self.options}.")
 
@@ -56,7 +56,7 @@ class BurgerRecipe:
             cutlets: int,
             eggs: int,
             sauce: str
-    ):
+    ) -> None:
         self.buns = buns
         self.cheese = cheese
         self.tomatoes = tomatoes
