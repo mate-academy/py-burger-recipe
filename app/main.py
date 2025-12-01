@@ -49,8 +49,6 @@ class OneOf(Validator):
 
     def validate(self,
                  value: str) -> None:
-        if not isinstance(value, str):
-            raise TypeError("Quantity should be string.")
         if value not in self.options:
             raise ValueError(f"Expected {value} to be one of {self.options}.")
 
