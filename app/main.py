@@ -79,12 +79,12 @@ class BurgerRecipe:
 
     def __init__(
             self,
-            buns: Number,
-            cheese: Number,
-            tomatoes: Number,
-            cutlets: Number,
-            eggs: Number,
-            sauce: OneOf
+            buns: int,
+            cheese: int,
+            tomatoes: int,
+            cutlets: int,
+            eggs: int,
+            sauce: str
     ) -> None:
         self.buns = buns
         self.cheese = cheese
