@@ -60,7 +60,7 @@ class BurgerRecipe:
                  sauce: str) -> None:
         self.buns = buns
         self.cheese = cheese
-        self. tomatoes = tomatoes
+        self.tomatoes = tomatoes
         self.cutlets = cutlets
         self.eggs = eggs
         self.sauce = sauce
