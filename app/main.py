@@ -1,4 +1,5 @@
 from abc import abstractmethod, ABC
+from typing import Any
 
 
 class Validator(ABC):
@@ -6,7 +7,7 @@ class Validator(ABC):
         self.protected_name = "_" + name
 
     @abstractmethod
-    def validate(self) -> None:
+    def validate(self, value: Any) -> None:
         pass
 
     def __get__(self, instance: "BurgerRecipe", owner: str) -> int | str:
@@ -28,12 +29,12 @@ class Number(Validator):
         if not self.min_value <= value <= self.max_value:
             raise ValueError(
                 f"Quantity should be not less than {self.min_value} "
-                f"and more than {self.max_value}.")
+                f"and greater than {self.max_value}.")
 
 
 class OneOf(Validator):
-    def __init__(self) -> None:
-        self.options = ("ketchup", "mayo", "burger")
+    def __init__(self, options: tuple) -> None:
+        self.options = options
 
     def validate(self, value: str) -> None:
         if value not in self.options:
@@ -46,7 +47,7 @@ class BurgerRecipe:
     tomatoes = Number(0, 3)
     cutlets = Number(1, 3)
     eggs = Number(0, 2)
-    sauce = OneOf()
+    sauce = OneOf(("ketchup", "mayo", "burger"))
 
     def __init__(
             self,
