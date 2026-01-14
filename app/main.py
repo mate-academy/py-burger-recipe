@@ -6,68 +6,47 @@ from abc import ABC, abstractmethod
 class Validator(ABC):
     @abstractmethod
     def validate(self, value: Any) -> bool:
-        pass
+        return True
 
     def __set_name__(self, owner: str, name: str) -> None:
-        print(owner)
         self.protected_name = "_" + name
 
     def __get__(self, instance: Validator, owner: str) -> Any:
-        print(owner)
         return getattr(instance, self.protected_name)
 
     def __set__(self, instance: Validator, value: Any) -> None:
-        setattr(instance, self.protected_name, value)
+        if self.validate(value):
+            setattr(instance, self.protected_name, value)
 
 
 class Number(Validator):
-    def __init__(self, minvalue: int, maxvalue: int) -> None:
-        self.min_value = minvalue
-        self.max_value = maxvalue
+    def __init__(self, min_value: int, max_value: int) -> None:
+        self.min_value = min_value
+        self.max_value = max_value
 
     def validate(self, value: Any) -> bool:
         if isinstance(value, int):
             if value in range(self.min_value, self.max_value + 1):
                 return True
-            error_text1 = f"Quantity should not be less than {self.max_value} "
-            error_text2 = f"and greater than {self.min_value}."
+            error_text1 = f"Quantity should not be less than {self.min_value} "
+            error_text2 = f"and greater than {self.max_value}."
             raise ValueError(error_text1 + error_text2)
 
         raise TypeError("Quantity should be integer.")
-
-    def __set_name__(self, owner: str, name: str) -> None:
-        return super().__set_name__(owner, name)
-
-    def __get__(self, instance: Validator, owner: str) -> int:
-        return super().__get__(instance, owner)
-
-    def __set__(self, instance: Validator, value: Any) -> None:
-        if self.validate(value):
-            super().__set__(instance, value)
 
 
 class OneOf(Validator):
     def __init__(
         self,
-        valid_items: tuple = ("ketchup", "mayo", "burger")
+        options: tuple = ("ketchup", "mayo", "burger")
     ) -> None:
-        self.options = tuple(valid_items)
+        self.options = tuple(options)
 
     def validate(self, value: Any) -> bool:
         if value in self.options:
             return True
 
         raise ValueError(f"Expected {value} to be one of {self.options}.")
-
-    def __set_name__(self, owner: str, name: str) -> None:
-        return super().__set_name__(owner, name)
-
-    def __get__(self, instance: Validator, owner: str) -> int:
-        return super().__get__(instance, owner)
-
-    def __set__(self, instance: Validator, value: Any) -> None:
-        if self.validate(value):
-            super().__set__(instance, value)
 
 
 class BurgerRecipe:
