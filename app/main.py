@@ -1,5 +1,5 @@
 class Validator:
-    pass
+    print("Hello, world")
 
 
 class Number:
