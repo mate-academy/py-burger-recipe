@@ -2,13 +2,13 @@ from abc import abstractmethod, ABC
 
 
 class Validator(ABC):
-    def __set_name__(self, owner: classmethod, name: str) -> None:
+    def __set_name__(self, owner: type, name: str) -> None:
         self.protected_name = "_" + name
 
-    def __get__(self, instance: classmethod, owner: classmethod) -> int:
+    def __get__(self, instance: object, owner: type) -> int | str:
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance: classmethod, value: int | str) -> None:
+    def __set__(self, instance: object, value: int | str) -> None:
         self.validate(value)
         setattr(instance, self.protected_name, value)
 
@@ -38,7 +38,7 @@ class OneOf(Validator):
                  options: tuple) -> None:
         self.options = options
 
-    def validate(self, value: int | str) -> None:
+    def validate(self, value: str) -> None:
         if value not in self.options:
             raise ValueError(f"Expected {value} to be one of {self.options}.")
 
