@@ -26,12 +26,11 @@ class Number(Validator):
     def validate(self, value: int) -> None:
         if not isinstance(value, int):
             raise TypeError("Quantity should be integer.")
-        if self.min_value <= value <= self.max_value:
-            setattr(self, self.protected_name, value)
-        else:
+        if not self.min_value <= value <= self.max_value:
             raise ValueError(
-                "Quantity should not be less than "
-                "attribute minvalue and greater than attribute maxvalue."
+                f"Quantity should not be less "
+                f"than {self.min_value} and greater "
+                f"than {self.max_value}."
             )
 
 
@@ -40,9 +39,7 @@ class OneOf(Validator):
         self.options = options
 
     def validate(self, value: str) -> None:
-        if value in self.options:
-            setattr(self, self.protected_name, value)
-        else:
+        if value not in self.options:
             raise ValueError(f"Expected {value} "
                              f"to be one of {self.options}.")
 
