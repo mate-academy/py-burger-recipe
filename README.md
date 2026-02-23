@@ -29,7 +29,7 @@ Implement the `Validator` class that will have such methods:
 
 - the `__set_name__` method, which accepts the name of the attribute, adds `_` to its beginning, and stores it in the `protected_name` attribute;
 - the `__get__` method that returns the attribute value;
-- the `__set__` method, which sets the attribute value (**note** that there should be no validation implemented, you should only call it there);
+- the `__set__` method, which sets the attribute value (**note** that there should be no validation implemented, you should only call it there); 
 - the `validate` abstract method, which accepts the `value`.
 
 Also, you need to implement the `Number` class, which is the `Validator` child class. It should have:
