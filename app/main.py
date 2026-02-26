@@ -30,7 +30,7 @@ class Validator(ABC):
             self,
             value: int | str
     ) -> None:
-        self.value = value
+        pass
 
 
 class Number(Validator):
