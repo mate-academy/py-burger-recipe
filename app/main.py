@@ -29,8 +29,8 @@ class Number(Validator):
 
         if value < self.min_value or value > self.max_value:
             raise ValueError(f"Quantity should not be less than"
-                             f"{self.min_value} "
-                             f"and greater than {self.max_value}.")
+                             f" {self.min_value}"
+                             f" and greater than {self.max_value}.")
 
 
 class OneOf(Validator):
