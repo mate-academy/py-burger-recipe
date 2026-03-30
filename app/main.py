@@ -6,15 +6,15 @@ class Validator(ABC):
 
     def __set_name__(
             self,
-            owner,
-            name
+            owner: type,
+            name: str
     ) -> None:
         self.protected_name = "_" + name
 
     def __get__(
             self,
-            instance,
-            owner
+            instance: Any,
+            owner: type
     ) -> Any:
         if instance is None:
             return self
@@ -22,15 +22,16 @@ class Validator(ABC):
 
     def __set__(
             self,
-            instance,
-            value
+            instance: Any,
+            value: type
     ) -> None:
         self.validate(value)
         setattr(instance, self.protected_name, value)
 
     @abstractmethod
-    def validate(self, value) -> None:
+    def validate(self, value: Any) -> None:
         raise NotImplementedError
+
 
 class Number(Validator):
     def __init__(
@@ -41,7 +42,7 @@ class Number(Validator):
         self.min_value = min_value
         self.max_value = max_value
 
-    def validate(self, value) -> None:
+    def validate(self, value: int) -> None:
         if not isinstance(value, int):
                 raise TypeError(
                     "Quantity should be integer."
@@ -60,7 +61,7 @@ class OneOf(Validator):
     ) -> None:
         self.options = options
 
-    def validate(self, value) -> None:
+    def validate(self, value: str) -> None:
         if value not in self.options:
             raise ValueError(f"Expected {value} to be one of {self.options}.")
 
@@ -68,7 +69,7 @@ class OneOf(Validator):
 class BurgerRecipe:
     buns = Number(2, 3)
     cheese = Number(0, 2)
-    tomatoes = Number(0,3)
+    tomatoes = Number(0, 3)
     cutlets = Number(1, 3)
     eggs = Number(0, 2)
     sauce = OneOf(("ketchup", "mayo", "burger"))
