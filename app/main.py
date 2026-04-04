@@ -33,8 +33,8 @@ class Number (Validator):
             raise TypeError("Quantity should be integer.")
 
         if not (self.min_value <= value <= self.max_value):
-            raise ValueError(f"Quantity should not be less than attribute "
-                             f"{self.min_value} and greater than attribute "
+            raise ValueError(f"Quantity should not be less than "
+                             f"{self.min_value} and greater than "
                              f"{self.max_value}.")
 
 
