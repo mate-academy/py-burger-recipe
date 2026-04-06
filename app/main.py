@@ -7,7 +7,8 @@ class Validator(ABC):
     def __set_name__(self, owner: type, name: str) -> None:
         self.protected_name: str = "_" + name
 
-    def __get__(self, instance: object, owner: type) -> Union["Validator", Any]:
+    def __get__(self, instance: object, owner: type
+                ) -> Union["Validator", Any]:
         if instance is None:
             return self
         return getattr(instance, self.protected_name)
