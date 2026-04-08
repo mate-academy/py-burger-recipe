@@ -42,8 +42,13 @@ class Number(Validator):
                              f"and greater than {maxvalue}.")
 
 
-class OneOf:
-    pass
+class OneOf(Validator):
+    def __init__(self, *options: tuple) -> None:
+        self._options = options
+
+    def validate(self, value: str | int) -> bool | None:
+        if not (isinstance(value, str) and value in self._options):
+            raise ValueError(f"Expected {value} to be one of {self._options}.")
 
 
 class BurgerRecipe:
@@ -52,7 +57,7 @@ class BurgerRecipe:
     tomatoes = Number(0, 3)
     cutlets = Number(1, 3)
     eggs = Number(0, 2)
-    # sauce = OneOf()
+    sauce = OneOf("ketchup", "mayo", "burger")
 
     def __init__(
             self,
@@ -70,5 +75,3 @@ class BurgerRecipe:
         self.cutlets = cutlets
         self.eggs = eggs
         self.sauce = sauce
-
-
