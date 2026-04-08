@@ -1,26 +1,26 @@
 from __future__ import annotations
 
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 from typing import Any, Type
 
 
-class Validator:
+class Validator(ABC):
     def __set_name__(self, cls: Type[Any], name: str) -> None:
-        self._protected_name = f"_{name}"
-        self._public_name = name
+        self.protected_name = f"_{name}"
+        self.public_name = name
 
     def __get__(self, obj: Type[Any] | None, cls: Type[Any]) -> int | str:
         if obj is None:
             return self
 
-        if self._protected_name not in obj.__dict__:
-            raise AttributeError(f"Attribute {self._public_name} isn't set.")
+        if self.protected_name not in obj.__dict__:
+            raise AttributeError(f"Attribute {self.public_name} isn't set.")
 
-        return obj.__dict__[self._protected_name]
+        return obj.__dict__[self.protected_name]
 
     def __set__(self, obj: Any, value: Any) -> None:
         self.validate(value)
-        obj.__dict__[self._protected_name] = value
+        obj.__dict__[self.protected_name] = value
 
     @abstractmethod
     def validate(self, value: str | int) -> bool | None:
@@ -29,26 +29,26 @@ class Validator:
 
 class Number(Validator):
     def __init__(self, minvalue: int, maxvalue: int) -> None:
-        self._min_value = minvalue
-        self._max_value = maxvalue
+        self.min_value = minvalue
+        self.max_value = maxvalue
 
     def validate(self, value: str | int) -> bool | None:
         if not isinstance(value, int):
             raise TypeError("Quantity should be integer.")
-        if not (self._min_value <= value <= self._max_value):
-            minvalue = self._min_value
-            maxvalue = self._max_value
+        if not (self.min_value <= value <= self.max_value):
+            minvalue = self.min_value
+            maxvalue = self.max_value
             raise ValueError(f"Quantity should not be less than {minvalue} "
                              f"and greater than {maxvalue}.")
 
 
 class OneOf(Validator):
     def __init__(self, *options: tuple) -> None:
-        self._options = options
+        self.options = options
 
     def validate(self, value: str | int) -> bool | None:
-        if not (isinstance(value, str) and value in self._options):
-            raise ValueError(f"Expected {value} to be one of {self._options}.")
+        if not (isinstance(value, str) and value in self.options):
+            raise ValueError(f"Expected {value} to be one of {self.options}.")
 
 
 class BurgerRecipe:
