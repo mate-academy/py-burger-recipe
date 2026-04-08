@@ -27,8 +27,19 @@ class Validator:
         pass
 
 
-class Number:
-    pass
+class Number(Validator):
+    def __init__(self, minvalue: int, maxvalue: int) -> None:
+        self._min_value = minvalue
+        self._max_value = maxvalue
+
+    def validate(self, value: str | int) -> bool | None:
+        if not isinstance(value, int):
+            raise TypeError("Quantity should be integer.")
+        if not (self._min_value <= value <= self._max_value):
+            minvalue = self._min_value
+            maxvalue = self._max_value
+            raise ValueError(f"Quantity should not be less than {minvalue} "
+                             f"and greater than {maxvalue}.")
 
 
 class OneOf:
@@ -36,12 +47,12 @@ class OneOf:
 
 
 class BurgerRecipe:
-    # buns = Number(2, 3)
-    # cheese = Number(0, 2)
-    # tomatoes = Number(0, 3)
-    # cutlets = Number(1, 3)
-    # eggs = Number(0, 2)
-    sauce = Validator("ketchup", "mayo", "burger")
+    buns = Number(2, 3)
+    cheese = Number(0, 2)
+    tomatoes = Number(0, 3)
+    cutlets = Number(1, 3)
+    eggs = Number(0, 2)
+    # sauce = OneOf()
 
     def __init__(
             self,
@@ -59,4 +70,5 @@ class BurgerRecipe:
         self.cutlets = cutlets
         self.eggs = eggs
         self.sauce = sauce
+
 
