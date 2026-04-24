@@ -7,7 +7,7 @@ class Validator(ABC):
         self.protected_name = "_" + name
 
     def __get__(self, instance: object, owner: Any) -> None:
-        if isinstance is None:
+        if instance is None:
             return self
         return getattr(instance, self.protected_name)
 
@@ -36,7 +36,7 @@ class Number(Validator):
 
 
 class OneOf(Validator):
-    def __init__(self, *options: list) -> None:
+    def __init__(self, *options) -> None:
         self.options = options
 
     def validate(self, value: str) -> None:
