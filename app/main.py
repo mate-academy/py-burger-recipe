@@ -42,7 +42,7 @@ class OneOf(Validator):
         if value not in self.options:
             raise ValueError(
                 f"Expected {value} to be "
-                f"one of ('{"', '".join(self.options)}')."
+                f"one of {tuple(self.options)}."
             )
 
 
