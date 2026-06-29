@@ -1,16 +1,17 @@
 from __future__ import annotations
 
 from abc import abstractmethod, ABC
+from typing import Any
 
 
 class Validator(ABC):
     def __set_name__(self, owner: type, name: str) -> None:
         self.protected_name = "_" + name
 
-    def __get__(self, instance: BurgerRecipe, owner: type) -> int | str:
+    def __get__(self, instance: Any, owner: type) -> int | str:
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance: BurgerRecipe, value: int | str) -> None:
+    def __set__(self, instance: Any, value: int | str) -> None:
         return setattr(instance, self.protected_name, value)
 
     @abstractmethod
@@ -31,7 +32,7 @@ class Number(Validator):
                              f"{self.min_value} and greater "
                              f"than {self.max_value}.")
 
-    def __set__(self, instance: BurgerRecipe, value: int) -> None:
+    def __set__(self, instance: Any, value: int) -> None:
         self.validate(value)
         return setattr(instance, self.protected_name, value)
 
@@ -44,7 +45,7 @@ class OneOf(Validator):
         if value not in self.options:
             raise ValueError(f"Expected {value} to be one of {self.options}.")
 
-    def __set__(self, instance: BurgerRecipe, value: str) -> None:
+    def __set__(self, instance: Any, value: str) -> None:
         self.validate(value)
         return setattr(instance, self.protected_name, value)
 
