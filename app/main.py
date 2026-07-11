@@ -13,10 +13,10 @@ class Validator(ABC):
         return getattr(instance, self.protected_name)
 
     def __set__(self, instance: BurgerRecipe, value: int) -> None:
-        setattr(instance, self.protected_name, self.validate(value))
+        setattr(instance, self.protected_name, value)
 
     @abstractmethod
-    def validate(self, value: int) -> int | str:
+    def validate(self, value: int | str) -> int | str:
         pass
 
 
@@ -67,11 +67,11 @@ class BurgerRecipe:
         tomatoes: int,
         cutlets: int,
         eggs: int,
-        sauce: int
+        sauce: str
     ) -> None:
-        self.buns = buns
-        self.cheese = cheese
-        self.tomatoes = tomatoes
-        self.cutlets = cutlets
-        self.eggs = eggs
-        self.sauce = sauce
+        self.buns = type(self).buns.validate(buns)
+        self.cheese = type(self).cheese.validate(cheese)
+        self.tomatoes = type(self).tomatoes.validate(tomatoes)
+        self.cutlets = type(self).cutlets.validate(cutlets)
+        self.eggs = type(self).eggs.validate(eggs)
+        self.sauce = type(self).sauce.validate(sauce)
