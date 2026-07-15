@@ -11,7 +11,6 @@ class Validator(ABC):
         return getattr(instance, self.protected_name)
 
     def __set__(self, instance: object, value: object) -> None:
-        self.validate(value)
         setattr(instance, self.protected_name, value)
 
     @abstractmethod
@@ -60,9 +59,15 @@ class BurgerRecipe:
         eggs: int,
         sauce: str,
     ) -> None:
+        type(self).buns.validate(buns)
         self.buns = buns
+        type(self).cheese.validate(cheese)
         self.cheese = cheese
+        type(self).tomatoes.validate(tomatoes)
         self.tomatoes = tomatoes
+        type(self).cutlets.validate(cutlets)
         self.cutlets = cutlets
+        type(self).eggs.validate(eggs)
         self.eggs = eggs
+        type(self).sauce.validate(sauce)
         self.sauce = sauce
