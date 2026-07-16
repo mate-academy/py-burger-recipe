@@ -7,6 +7,8 @@ class Validator(ABC):
         self.protected_name = f"_{name}"
 
     def __get__(self, instance: Any, owner: Any) -> Any:
+        if instance is None:
+            return self
         return getattr(instance, self.protected_name)
 
     @abstractmethod
@@ -14,7 +16,6 @@ class Validator(ABC):
         pass
 
     def __set__(self, instance: Any, value: Any) -> None:
-        self.validate(value)
         setattr(instance, self.protected_name, value)
 
 
@@ -52,6 +53,13 @@ class BurgerRecipe:
 
     def __init__(self, buns: int, cheese: int, tomatoes: int,
                  cutlets: int, eggs: int, sauce: str) -> None:
+        BurgerRecipe.buns.validate(buns)
+        BurgerRecipe.cheese.validate(cheese)
+        BurgerRecipe.tomatoes.validate(tomatoes)
+        BurgerRecipe.cutlets.validate(cutlets)
+        BurgerRecipe.eggs.validate(eggs)
+        BurgerRecipe.sauce.validate(sauce)
+
         self.buns = buns
         self.cheese = cheese
         self.tomatoes = tomatoes
