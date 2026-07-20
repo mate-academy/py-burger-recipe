@@ -35,6 +35,8 @@ class Validator(ABC):
         Return the stored value from the instance, or the descriptor
         itself when accessed on the class.
         """
+        if instance is None:
+            return self
         return getattr(instance, self.protected_name)
 
     def __set__(self, instance: Any, value: Any) -> None:
@@ -65,7 +67,7 @@ class Number(Validator):
         """
         Validate that value is an integer within [min_value, max_value].
         """
-        if not isinstance(value, int):
+        if type(value) is not int:
             raise TypeError("Quantity should be integer.")
         if not self.min_value <= value <= self.max_value:
             raise ValueError(
