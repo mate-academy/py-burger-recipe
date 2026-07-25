@@ -9,7 +9,7 @@ class Validator(ABC):
     def __get__(self,
                 instance: BurgerRecipe,
                 objtype: BurgerRecipe = None
-                ) -> None:
+                ) -> int | str:
         return getattr(instance, self.protected_name)
 
     def __set__(self, instance: BurgerRecipe, value: str | int) -> None:
@@ -61,7 +61,7 @@ class BurgerRecipe:
                  sauce: str
                  ) -> None:
         self.buns = buns
-        self. cheese = cheese
+        self.cheese = cheese
         self.tomatoes = tomatoes
         self.cutlets = cutlets
         self.eggs = eggs
