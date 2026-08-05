@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 
 class Validator(ABC):
-    def __set_name__(self, owner: object, name: str):
+    def __set_name__(self, owner: object, name: str) -> None:
         self.protected_name = "_" + name
 
     def __get__(self, instance: object, owner: object) -> None:
@@ -49,6 +49,7 @@ class BurgerRecipe:
     cutlets = Number(1, 3)
     eggs = Number(0, 2)
     sauce = OneOf(("ketchup", "mayo", "burger"))
+
     def __init__(self, buns: int,
                  cheese: int,
                  tomatoes: int,
