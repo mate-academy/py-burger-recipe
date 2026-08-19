@@ -3,10 +3,6 @@ from typing import Any
 
 
 class Validator(ABC):
-    @abstractmethod
-    def validate(self, value: Any) -> None:
-        pass
-
     def __set_name__(self, owner: type, name: str) -> None:
         self.protected_name = "_" + name
 
@@ -16,6 +12,10 @@ class Validator(ABC):
     def __set__(self, instance: Any, value: Any) -> None:
         self.validate(value)
         setattr(instance, self.protected_name, value)
+
+    @abstractmethod
+    def validate(self, value: Any) -> None:
+        pass
 
 
 class Number(Validator):
@@ -29,18 +29,20 @@ class Number(Validator):
 
         if not self.min_value <= value <= self.max_value:
             raise ValueError(
-                f"Quantity should not be less than {self.min_value}"
-                f"and greater than {self.max_value}"
+                f"Quantity should not be less than {self.min_value} "
+                f"and greater than {self.max_value}."
             )
 
 
 class OneOf(Validator):
-    def __init__(self, options: tuple) -> None:
+    def __init__(self, options: tuple[str, ...]) -> None:
         self.options = options
 
     def validate(self, value: Any) -> None:
         if value not in self.options:
-            raise ValueError(f"Expected {value} to be one of {self.options}.")
+            raise ValueError(
+                f"Expected {value} to be one of {self.options}."
+            )
 
 
 class BurgerRecipe:
@@ -58,7 +60,7 @@ class BurgerRecipe:
         tomatoes: int,
         cutlets: int,
         eggs: int,
-        sauce: str
+        sauce: str,
     ) -> None:
         self.buns = buns
         self.cheese = cheese
