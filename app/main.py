@@ -33,8 +33,10 @@ class Number(Validator):
 
 
 class OneOf(Validator):
-    def __init__(self) -> None:
-        self.options = ("ketchup", "mayo", "burger")
+    def __init__(self,
+                 options: tuple[str, ...] = ("ketchup", "mayo", "burger")
+                 ) -> None:
+        self.options = options
 
     def validate(self, value: str) -> None:
         if value not in self.options:
