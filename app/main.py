@@ -37,6 +37,13 @@ class OneOf(Validator):
             raise ValueError(f"Expected {value} to be one of {self.options}.")
 
 class BurgerRecipe:
+    buns = Number()
+    cheese = Number()
+    tomatoes = Number()
+    cutlets = Number()
+    eggs = Number()
+    sauce = OneOf()
+
     def __init__(self,
                  buns: int,
                  cheese: int,
