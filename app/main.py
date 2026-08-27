@@ -28,9 +28,13 @@ class Number(Validator):
                              f"and greater than {self.max_value}.")
 
 
-class OneOf:
-    pass
+class OneOf(Validator):
+    def __init__(self) -> None:
+        self.options = ("ketchup", "mayo", "burger")
 
+    def validate(self, value: str) -> None:
+        if value not in self.options:
+            raise ValueError(f"Expected {value} to be one of {self.options}.")
 
 class BurgerRecipe:
     def __init__(self,
