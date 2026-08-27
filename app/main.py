@@ -14,8 +14,18 @@ class Validator(ABC):
     def validate(self, value: int) -> None:
         pass
 
-class Number:
-    pass
+class Number(Validator):
+    def __init__(self, min_value: int, max_value: int) -> None:
+        self.min_value = min_value
+        self.max_value = max_value
+
+    def validate(self, value: int) -> None:
+        if not isinstance(value, int):
+            raise TypeError("Quantity should be integer.")
+
+        if not (self.min_value <= value <= self.max_value):
+            raise ValueError(f"Quantity should not be less than {self.min_value} "
+                             f"and greater than {self.max_value}.")
 
 
 class OneOf:
