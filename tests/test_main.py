@@ -1,7 +1,7 @@
 from abc import ABC
 
-import pytest
 
+import pytest
 from app.main import Validator, BurgerRecipe
 
 
