@@ -92,7 +92,7 @@ def test_incorrect_type_of_ingredient(ingredients):
     with pytest.raises(TypeError) as e:
         BurgerRecipe(*ingredients)
     assert (
-        str(e.value) == "Quantity should be integer."
+        str(e.value) == "Quantity should be integer"
     ), "Text of the 'TypeError' should equal to 'Quantity should be integer.'"
 
 
