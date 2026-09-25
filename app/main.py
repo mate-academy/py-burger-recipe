@@ -1,18 +1,22 @@
 from abc import ABC, abstractmethod
 
 
-class Validator (ABC):
-    def __set_name__(self, instance: Validator, name: str) -> None:
-        self.protected_name = "_" + name
+class Validator(ABC):
+    def __set_name__(
+        self, owner: type, name: str
+    ) -> None:
+        self.protected_name = f"_{name}"
 
     def __get__(
-        self, instance: "BurgerRecipe | None", owner: type
-    ) -> int | None:
+        self, instance: BurgerRecipe, owner: type
+    ) -> int | str:
         if instance is None:
             return self
         return getattr(instance, self.protected_name)
 
-    def __set__(self, instance: Validator, value: int | str) -> None:
+    def __set__(
+        self, instance: BurgerRecipe, value: int | str
+    ) -> None:
         self.validate(instance, value)
 
     @abstractmethod
@@ -28,13 +32,10 @@ class Number(Validator):
     def validate(self, instance: BurgerRecipe, value: int) -> None:
         if not isinstance(value, int):
             raise TypeError("Quantity should be integer.")
-        if (
-            value not in range(self.min_value, self.max_value + 1)
-        ):
+        if value not in range(self.min_value, self.max_value + 1):
             raise ValueError(
-                f"Quantity should not be less than {self.min_value} and"
-                f"greater than {self.max_value}."
-            )
+                f"Quantity should not be less than {self.min_value}"
+                f"and greater than {self.max_value}")
         setattr(instance, self.protected_name, value)
 
 
@@ -43,8 +44,6 @@ class OneOf(Validator):
         self.options = options
 
     def validate(self, instance: BurgerRecipe, value: str) -> None:
-        if not isinstance(value, str):
-            raise TypeError("attribute name must be string.")
         if value not in self.options:
             raise ValueError(
                 f"Expected {value} to be one of {tuple(self.options)}."
@@ -61,8 +60,8 @@ class BurgerRecipe:
     sauce = OneOf(["ketchup", "mayo", "burger"])
 
     def __init__(
-        self, buns: int = 2, cheese: int = 2, tomatoes: int = 1,
-        cutlets: int = 1, eggs: int = 1, sauce: str = "ketchup"
+        self, buns: int, cheese: int, tomatoes: int,
+        cutlets: int, eggs: int, sauce: str
     ) -> None:
         self.buns = buns
         self.cheese = cheese
