@@ -41,13 +41,13 @@ class Number(Validator):
 
 
 class OneOf(Validator):
-    def __init__(self, options: list[str]) -> None:
+    def __init__(self, options: tuple[str]) -> None:
         self.options = options
 
     def validate(self, instance: BurgerRecipe, value: str) -> None:
         if value not in self.options:
             raise ValueError(
-                f"Expected {value} to be one of {tuple(self.options)}."
+                f"Expected {value} to be one of {self.options}."
             )
         setattr(instance, self.protected_name, value)
 
@@ -58,7 +58,7 @@ class BurgerRecipe:
     tomatoes = Number(0, 3)
     cutlets = Number(1, 3)
     eggs = Number(0, 2)
-    sauce = OneOf(["ketchup", "mayo", "burger"])
+    sauce = OneOf(("ketchup", "mayo", "burger"))
 
     def __init__(
         self, buns: int, cheese: int, tomatoes: int,
