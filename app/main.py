@@ -30,7 +30,7 @@ class Number(Validator):
             raise ValueError(f""
                              f"Quantity should not be less than"
                              f" {self.min_value} and"
-                             f" greater than {self.max_value}"
+                             f" greater than {self.max_value}."
                              f"")
 
 
@@ -39,11 +39,9 @@ class OneOf(Validator):
         self.options = options
 
     def validate(self, value: str) -> None:
-        if not isinstance(value, str):
-            raise TypeError("Quantity should be string.")
         if value not in self.options:
-            raise ValueError(f"Expected {value} to be"
-                             f" one of {tuple(self.options)}.")
+            raise ValueError(f"Expected {value} to "
+                             f"be one of {tuple(self.options)}.")
 
 
 class BurgerRecipe:
